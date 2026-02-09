@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* LOW LUMINANCE THEME (Dark Mode Default) */
+    --background: 222 47% 11%;    /* Deep Blue-Grey #0f172a */
+    --foreground: 210 40% 98%;    /* Soft White */
+
+    --card: 222 47% 11%;          /* Matches background for seamless look */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 100% 20%;      /* RP Navy Blue */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 48 96% 53%;      /* Muted Gold (Less harsh than pure yellow) */
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 217 33% 17%;         /* Dark Grey for inactive items */
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 20%;        /* Subtle borders */
+    --input: 217 33% 17%;
+    --ring: 212 27% 84%;
+    
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}

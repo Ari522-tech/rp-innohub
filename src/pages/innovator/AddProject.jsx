@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea'; // We will create this simple component below
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Upload, Save } from 'lucide-react';
@@ -11,36 +10,44 @@ const AddProject = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-6 pb-10">
       
+      {/* Page Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-slate-900">Add New Innovation</h1>
-        <Button variant="outline" className="border-slate-300 text-slate-600">Cancel</Button>
+        <Button variant="outline" className="border-slate-300 text-slate-600 hover:text-slate-900">Cancel</Button>
       </div>
 
       <Card className="bg-white shadow-xl border-t-4 border-t-rp-blue">
         <CardHeader>
-          <CardTitle>Project Details</CardTitle>
-          <CardDescription>Share your innovation with the world.</CardDescription>
+          <CardTitle className="text-slate-900">Project Details</CardTitle>
+          <CardDescription className="text-slate-500">Share your innovation with the world.</CardDescription>
         </CardHeader>
+        
         <CardContent className="space-y-6">
           
           {/* Basic Info */}
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label>Project Title</Label>
-              <Input placeholder="e.g. Smart Irrigation System" />
+              <Label className="text-slate-700 font-medium">Project Title</Label>
+              {/* Added text-slate-900 for dark typing color */}
+              <Input 
+                placeholder="e.g. Smart Irrigation System" 
+                className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-rp-blue" 
+              />
             </div>
+            
             <div className="space-y-2">
-              <Label>Category</Label>
+              <Label className="text-slate-700 font-medium">Category</Label>
               <Select>
-                <SelectTrigger className="bg-white border-slate-300">
+                {/* Added text-slate-900 to the trigger */}
+                <SelectTrigger className="bg-white border-slate-300 text-slate-900 focus:ring-rp-blue">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="agriculture">Agriculture</SelectItem>
-                  <SelectItem value="health">Health</SelectItem>
-                  <SelectItem value="education">Education</SelectItem>
-                  <SelectItem value="fintech">Fintech</SelectItem>
-                  <SelectItem value="energy">Energy</SelectItem>
+                <SelectContent className="bg-white border-slate-200">
+                  <SelectItem value="agriculture" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Agriculture</SelectItem>
+                  <SelectItem value="health" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Health</SelectItem>
+                  <SelectItem value="education" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Education</SelectItem>
+                  <SelectItem value="fintech" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Fintech</SelectItem>
+                  <SelectItem value="energy" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Energy</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -48,34 +55,39 @@ const AddProject = () => {
 
           {/* Description */}
           <div className="space-y-2">
-            <Label>Description</Label>
+            <Label className="text-slate-700 font-medium">Description</Label>
+            {/* Added text-slate-900 to textarea */}
             <textarea 
-              className="flex min-h-[120px] w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rp-blue disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex min-h-[120px] w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 ring-offset-white placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rp-blue disabled:cursor-not-allowed disabled:opacity-50"
               placeholder="Describe the problem your project solves..."
             />
           </div>
 
           {/* Technologies */}
           <div className="space-y-2">
-            <Label>Technologies Used</Label>
-            <Input placeholder="e.g. React, IoT, Python (Comma separated)" />
+            <Label className="text-slate-700 font-medium">Technologies Used</Label>
+            <Input 
+              placeholder="e.g. React, IoT, Python (Comma separated)" 
+              className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-rp-blue" 
+            />
           </div>
 
           {/* Image Upload Mockup */}
           <div className="space-y-2">
-            <Label>Project Image / Thumbnail</Label>
-            <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-slate-50 transition-colors cursor-pointer">
-              <div className="bg-slate-100 p-3 rounded-full mb-3">
-                <Upload className="h-6 w-6 text-slate-500" />
+            <Label className="text-slate-700 font-medium">Project Image / Thumbnail</Label>
+            <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-slate-50 hover:border-rp-blue transition-all cursor-pointer group">
+              <div className="bg-slate-100 p-3 rounded-full mb-3 group-hover:bg-blue-50 transition-colors">
+                <Upload className="h-6 w-6 text-slate-500 group-hover:text-rp-blue" />
               </div>
-              <p className="text-sm font-medium text-slate-700">Click to upload or drag and drop</p>
+              <p className="text-sm font-medium text-slate-700 group-hover:text-rp-blue">Click to upload or drag and drop</p>
               <p className="text-xs text-slate-400 mt-1">SVG, PNG, JPG or GIF (max. 3MB)</p>
             </div>
           </div>
 
-          <div className="pt-4 flex justify-end gap-4">
-            <Button variant="ghost" className="text-slate-600">Save as Draft</Button>
-            <Button className="bg-rp-blue hover:bg-blue-900 text-white min-w-[150px]">
+          {/* Action Buttons */}
+          <div className="pt-4 flex justify-end gap-4 border-t border-slate-100 mt-6">
+            <Button variant="ghost" className="text-slate-600 hover:text-slate-900 hover:bg-slate-100">Save as Draft</Button>
+            <Button className="bg-rp-blue hover:bg-blue-900 text-white min-w-[150px] shadow-lg shadow-blue-900/20">
               <Save className="mr-2 h-4 w-4" /> Publish Project
             </Button>
           </div>

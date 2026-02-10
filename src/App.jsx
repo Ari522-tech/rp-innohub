@@ -7,50 +7,35 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 
 // --- Public Pages ---
 import Home from '@/pages/public/Home';
+import Innovations from '@/pages/public/Innovations';
+import Calls from '@/pages/public/Calls';
+import Training from '@/pages/public/Training';
+import About from '@/pages/public/About';
 
 // --- Auth Pages ---
-import Login from '@/pages/auth/Login';
-import Register from '@/pages/auth/Register';
+// REMOVED: Login and Register imports (since we use the Modal now)
+import AdminLogin from '@/pages/auth/AdminLogin'; // KEEP THIS!
 
 // --- Innovator Pages ---
 import InnovatorDashboard from '@/pages/innovator/Dashboard';
 import AddProject from '@/pages/innovator/AddProject';
+import MyProjects from '@/pages/innovator/MyProjects';
+import Settings from '@/pages/innovator/Settings';
 
 // --- Institution Pages ---
 import InstitutionDashboard from '@/pages/institution/Dashboard';
-
-//--- calls ----
-
-import Calls from '@/pages/public/Calls';
-// --- Innovations ---
-import Innovations from '@/pages/public/Innovations';
-
-// --- About ---
-
-import About from '@/pages/public/About';
-
-// --- Training ----
-import Training from '@/pages/public/Training';
-
-// --- Postcall ---
 import PostCall from '@/pages/institution/PostCall';
 
-// --- MyProjects
-import MyProjects from '@/pages/innovator/MyProjects';
-
-// --- innov settings ---
-
-import Settings from '@/pages/innovator/Settings';
-
 // --- Admin Pages ---
-const AdminDashboard = () => <div className="p-10 text-center"><h1>Admin Panel (Coming Soon)</h1></div>;
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import ProjectManagement from '@/pages/admin/ProjectManagement';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         
-        {/* 1. PUBLIC ROUTES (Includes Login/Register now) */}
+        {/* 1. PUBLIC ROUTES */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/innovations" element={<Innovations />} />
@@ -58,12 +43,15 @@ function App() {
           <Route path="/training" element={<Training />} />
           <Route path="/about" element={<About />} />
           
-          {/* MOVED HERE: Now they get Navbar & Footer */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* OPTIONAL: Redirect old /login links to Home so the user can click the button */}
+          <Route path="/login" element={<Navigate to="/" replace />} />
+          <Route path="/register" element={<Navigate to="/" replace />} />
         </Route>
 
-        {/* 2. INNOVATOR DASHBOARD (Protected) */}
+        {/* 2. HIDDEN ADMIN LOGIN (Keep this!) */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        {/* 3. INNOVATOR DASHBOARD */}
         <Route path="/innovator" element={<DashboardLayout role="innovator" />}>
           <Route index element={<InnovatorDashboard />} />
           <Route path="projects" element={<MyProjects />} />
@@ -72,7 +60,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
         </Route>
 
-        {/* 3. INSTITUTION DASHBOARD (Protected) */}
+        {/* 4. INSTITUTION DASHBOARD */}
         <Route path="/institution" element={<DashboardLayout role="institution" />}>
           <Route index element={<InstitutionDashboard />} />
           <Route path="post-call" element={<PostCall />} />
@@ -80,12 +68,15 @@ function App() {
           <Route path="settings" element={<div className="p-10">Institution Settings</div>} />
         </Route>
 
-        {/* 4. ADMIN ROUTES */}
+        {/* 5. ADMIN DASHBOARD */}
         <Route path="/admin" element={<DashboardLayout role="admin" />}>
            <Route index element={<AdminDashboard />} />
+           <Route path="projects" element={<ProjectManagement />} />
+           <Route path="users" element={<div className="p-10">User Management (Coming Soon)</div>} />
+           <Route path="reports" element={<div className="p-10">Analytics (Coming Soon)</div>} />
         </Route>
 
-        {/* 5. CATCH ALL */}
+        {/* 6. CATCH ALL */}
         <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>

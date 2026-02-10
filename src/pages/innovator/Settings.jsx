@@ -18,7 +18,7 @@ const Settings = () => {
         <h1 className="text-3xl font-bold text-slate-900">Account Settings</h1>
       </div>
 
-      <Tabs defaultValue="notifications" className="w-full">
+      <Tabs defaultValue="profile" className="w-full">
         
         <TabsList className="bg-white border border-slate-200 p-1 mb-6 rounded-lg grid w-full grid-cols-3">
           <TabsTrigger 
@@ -55,32 +55,35 @@ const Settings = () => {
                  <div className="h-24 w-24 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400">
                     <User size={32} />
                  </div>
-                 <Button variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-50">Change Avatar</Button>
+                 <Button variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900">Change Avatar</Button>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label className="text-slate-700">First Name</Label>
-                  <Input defaultValue="Jean" className="bg-white text-slate-900 border-slate-300" />
+                  <Label className="text-slate-700 font-medium">First Name</Label>
+                  {/* Added text-slate-900 */}
+                  <Input defaultValue="Jean" className="bg-white text-slate-900 border-slate-300 focus-visible:ring-rp-blue" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-slate-700">Last Name</Label>
-                  <Input defaultValue="Paul" className="bg-white text-slate-900 border-slate-300" />
+                  <Label className="text-slate-700 font-medium">Last Name</Label>
+                  {/* Added text-slate-900 */}
+                  <Input defaultValue="Paul" className="bg-white text-slate-900 border-slate-300 focus-visible:ring-rp-blue" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-slate-700">Email Address</Label>
-                <Input defaultValue="student@rp.ac.rw" disabled className="bg-slate-50 text-slate-500 border-slate-200" />
+                <Label className="text-slate-700 font-medium">Email Address</Label>
+                <Input defaultValue="student@rp.ac.rw" disabled className="bg-slate-50 text-slate-500 border-slate-200 cursor-not-allowed" />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-slate-700">Bio / Headline</Label>
-                <Input defaultValue="IoT Enthusiast | Final Year Student at IPRC Kigali" className="bg-white text-slate-900 border-slate-300" />
+                <Label className="text-slate-700 font-medium">Bio / Headline</Label>
+                {/* Added text-slate-900 */}
+                <Input defaultValue="IoT Enthusiast | Final Year Student at IPRC Kigali" className="bg-white text-slate-900 border-slate-300 focus-visible:ring-rp-blue" />
               </div>
 
               <div className="pt-4 flex justify-end">
-                <Button className="bg-rp-blue hover:bg-blue-900 text-white">
+                <Button className="bg-rp-blue hover:bg-blue-900 text-white shadow-lg shadow-blue-900/20">
                   <Save className="mr-2 h-4 w-4" /> Save Changes
                 </Button>
               </div>
@@ -97,21 +100,24 @@ const Settings = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-slate-700">Current Password</Label>
-                <Input type="password" className="bg-white border-slate-300" />
+                <Label className="text-slate-700 font-medium">Current Password</Label>
+                {/* Added text-slate-900 */}
+                <Input type="password" className="bg-white text-slate-900 border-slate-300 focus-visible:ring-rp-blue" />
               </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label className="text-slate-700">New Password</Label>
-                  <Input type="password" className="bg-white border-slate-300" />
+                  <Label className="text-slate-700 font-medium">New Password</Label>
+                  {/* Added text-slate-900 */}
+                  <Input type="password" className="bg-white text-slate-900 border-slate-300 focus-visible:ring-rp-blue" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-slate-700">Confirm New Password</Label>
-                  <Input type="password" className="bg-white border-slate-300" />
+                  <Label className="text-slate-700 font-medium">Confirm New Password</Label>
+                  {/* Added text-slate-900 */}
+                  <Input type="password" className="bg-white text-slate-900 border-slate-300 focus-visible:ring-rp-blue" />
                 </div>
               </div>
               <div className="pt-4 flex justify-end">
-                <Button className="bg-rp-blue hover:bg-blue-900 text-white">
+                <Button className="bg-rp-blue hover:bg-blue-900 text-white shadow-lg shadow-blue-900/20">
                   Update Password
                 </Button>
               </div>
@@ -119,9 +125,9 @@ const Settings = () => {
           </Card>
         </TabsContent>
         
-        {/* --- NOTIFICATIONS (Updated & Interactive) --- */}
+        {/* --- NOTIFICATIONS --- */}
         <TabsContent value="notifications">
-           <Card className="bg-white shadow-lg border-t-4 border-t-green-500">
+          <Card className="bg-white shadow-lg border-t-4 border-t-green-500">
             <CardHeader>
               <CardTitle className="text-slate-900">Notification Preferences</CardTitle>
               <CardDescription className="text-slate-500">Choose what updates you want to receive.</CardDescription>

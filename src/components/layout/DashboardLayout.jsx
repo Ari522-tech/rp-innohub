@@ -9,7 +9,9 @@ import {
   LogOut, 
   Menu, 
   X, 
-  Users
+  Users,
+  Shield,
+  BarChart3
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -42,7 +44,16 @@ const DashboardLayout = ({ role }) => {
     { label: 'Settings', path: '/institution/settings', icon: Settings },
   ];
 
-  const links = role === 'innovator' ? innovatorLinks : institutionLinks;
+  const adminLinks = [
+    { label: 'Admin Dashboard', path: '/admin', icon: LayoutDashboard },
+    { label: 'Project Mgmt', path: '/admin/projects', icon: Shield },
+    { label: 'User Mgmt', path: '/admin/users', icon: Users },
+    { label: 'Reports', path: '/admin/reports', icon: BarChart3 },
+  ];
+
+  let links = innovatorLinks;
+  if (role === 'institution') links = institutionLinks;
+  if (role === 'admin') links = adminLinks;
 
   const handleLogout = () => {
     navigate('/login');

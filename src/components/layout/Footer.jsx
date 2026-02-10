@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Lightbulb, Facebook, Twitter, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Lightbulb, Facebook, X, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -10,8 +10,8 @@ const Footer = () => {
           
           {/* Column 1: Brand Info */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2 text-white">
-              <div className="bg-rp-blue p-2 rounded-lg text-white">
+            <Link to="/" className="flex items-center gap-2 text-white group">
+              <div className="bg-white/10 p-2 rounded-lg text-rp-gold group-hover:bg-rp-gold group-hover:text-rp-blue transition-all duration-300">
                 <Lightbulb size={24} />
               </div>
               <span className="font-bold text-xl">RP InnoHub</span>
@@ -21,7 +21,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Column 2: Quick Links (Updated to match Navbar) */}
+          {/* Column 2: Quick Links */}
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
@@ -30,6 +30,7 @@ const Footer = () => {
               <li><Link to="/calls" className="hover:text-rp-gold transition-colors">Calls for Projects</Link></li>
               <li><Link to="/training" className="hover:text-rp-gold transition-colors">Training</Link></li>
               <li><Link to="/about" className="hover:text-rp-gold transition-colors">About Us</Link></li>
+              <li><Link to="/contact" className="hover:text-rp-gold transition-colors">Contact</Link></li>
             </ul>
           </div>
 
@@ -38,38 +39,42 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-3">
-                <MapPin size={16} className="text-rp-gold" />
+                <MapPin size={16} className="text-rp-gold shrink-0" />
                 <span>Huye, Rwanda</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={16} className="text-rp-gold" />
+                <Mail size={16} className="text-rp-gold shrink-0" />
                 <span>innovation@rp.ac.rw</span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={16} className="text-rp-gold" />
+                <Phone size={16} className="text-rp-gold shrink-0" />
                 <span>+250 791 100 954</span>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Newsletter / Socials */}
+          {/* Column 4: Socials */}
           <div>
             <h3 className="text-white font-semibold mb-4">Stay Connected</h3>
             <div className="flex gap-4 mb-6">
-              <a href="#" className="bg-slate-800 p-2 rounded-full hover:bg-rp-blue hover:text-white transition-all">
-                <Twitter size={18} />
+              {/* X (formerly Twitter) */}
+              <a href="#" className="bg-slate-800 p-2 rounded-full hover:bg-rp-gold hover:text-rp-blue transition-all group">
+                <X size={18} className="group-hover:scale-110 transition-transform" />
               </a>
-              <a href="#" className="bg-slate-800 p-2 rounded-full hover:bg-rp-blue hover:text-white transition-all">
-                <Linkedin size={18} />
+              {/* LinkedIn */}
+              <a href="#" className="bg-slate-800 p-2 rounded-full hover:bg-rp-gold hover:text-rp-blue transition-all group">
+                <Linkedin size={18} className="group-hover:scale-110 transition-transform" />
               </a>
-              <a href="#" className="bg-slate-800 p-2 rounded-full hover:bg-rp-blue hover:text-white transition-all">
-                <Facebook size={18} />
+              {/* Facebook */}
+              <a href="#" className="bg-slate-800 p-2 rounded-full hover:bg-rp-gold hover:text-rp-blue transition-all group">
+                <Facebook size={18} className="group-hover:scale-110 transition-transform" />
               </a>
             </div>
             <p className="text-xs text-slate-500">
               &copy; {new Date().getFullYear()} Rwanda Polytechnic. All rights reserved.
             </p>
           </div>
+
         </div>
       </div>
       

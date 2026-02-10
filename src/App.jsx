@@ -11,7 +11,7 @@ import Innovations from '@/pages/public/Innovations';
 import Calls from '@/pages/public/Calls';
 import Training from '@/pages/public/Training';
 import About from '@/pages/public/About';
-
+import Contact from '@/pages/public/Contact';
 // --- Auth Pages ---
 // REMOVED: Login and Register imports (since we use the Modal now)
 import AdminLogin from '@/pages/auth/AdminLogin'; // KEEP THIS!
@@ -42,6 +42,7 @@ function App() {
           <Route path="/calls" element={<Calls />} />
           <Route path="/training" element={<Training />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           
           {/* OPTIONAL: Redirect old /login links to Home so the user can click the button */}
           <Route path="/login" element={<Navigate to="/" replace />} />

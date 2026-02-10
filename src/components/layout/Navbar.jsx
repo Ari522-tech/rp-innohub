@@ -17,6 +17,7 @@ const Navbar = () => {
     { name: 'Calls for Projects', path: '/calls' },
     { name: 'Training', path: '/training' },
     { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   const openAuth = (view) => {

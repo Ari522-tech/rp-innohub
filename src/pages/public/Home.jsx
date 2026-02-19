@@ -1,277 +1,277 @@
-import React from 'react';
+// src/pages/Home.jsx
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card'; // Added for Impact Stories
-import { ArrowRight, Search, Zap, Users, Trophy, Quote } from 'lucide-react';
-import ProjectCard from '@/components/shared/ProjectCard';
-import CallCard from '@/components/shared/CallCard';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  ArrowRight,
+  Users,
+  Briefcase,
+  Search,
+  Award,
+  BookOpen,
+  Mail,
+  Globe,
+} from 'lucide-react';
 
-// --- 1. FEATURED INNOVATIONS DATA ---
+// ── Fake data (later you will get this from your backend) ────────────────
 const featuredProjects = [
-  { 
-    id: 1, 
-    title: 'Solarify Rwanda', 
-    category: 'Energy', 
-    status: 'Active', 
-    description: 'Affordable solar monitoring for rural households using IoT sensors developed in Kigali.', 
-    technologies: ['IoT', 'React', 'MQTT'],
-    image: 'https://solektra.rw/wp-content/uploads/2023/01/solar-1024x684.png'
-  },
-  { 
-    id: 2, 
-    title: 'E-Learning Hub', 
-    category: 'Education', 
-    status: 'Completed', 
-    description: 'A platform connecting RP students with digital libraries and peer tutoring.', 
-    technologies: ['Python', 'Django', 'PostgreSQL'],
-    image: 'https://tse4.mm.bing.net/th/id/OIP.jN3HpNEVzhp7-2ihardOKAHaE8?rs=1&pid=ImgDetMain&o=7&rm=3'
-  },
-  { 
-    id: 3, 
-    title: 'AgriMarket Connect', 
-    category: 'Agriculture', 
-    status: 'Prototype', 
-    description: 'Connecting small-scale farmers directly to urban markets in Musanze and Huye.', 
-    technologies: ['Flutter', 'Firebase'],
-    image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop'
-  }
-];
-
-// --- 2. OPEN CALLS DATA ---
-const activeCalls = [
   {
     id: 1,
-    title: 'Digital Health Records System',
-    institution: 'Ministry of Health',
-    status: 'Open',
-    daysLeft: 12,
-    description: 'We are looking for a secure, scalable solution to digitize patient records across 50 clinics.',
-    budget: '15M - 25M RWF',
-    deadline: 'Nov 30, 2024',
-    image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=200&auto=format&fit=crop'
+    title: "Solarify Rwanda",
+    category: "Energy",
+    status: "Active",
+    shortDesc: "IoT solar monitoring for rural households",
+    impact: "Reduced energy costs by 30% for 500+ homes",
   },
   {
     id: 2,
-    title: 'Smart Traffic Management',
-    institution: 'City of Kigali',
-    status: 'Open',
-    daysLeft: 5,
-    description: 'Develop an AI-powered traffic light control system to reduce congestion during peak hours.',
-    budget: '50M+ RWF',
-    deadline: 'Nov 20, 2024',
-    image: 'https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=200&auto=format&fit=crop'
+    title: "E-Learning Hub",
+    category: "Education",
+    status: "Completed",
+    shortDesc: "Digital library & peer tutoring for RP students",
+    impact: "Improved results for 2,000+ students",
   },
   {
     id: 3,
-    title: 'Coffee Supply Chain Tracker',
-    institution: 'NAEB',
-    status: 'Open',
-    daysLeft: 20,
-    description: 'Blockchain-based system to trace coffee beans from washing stations to export.',
-    budget: '18M RWF',
-    deadline: 'Dec 15, 2024',
-    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=200&auto=format&fit=crop'
+    title: "AgriMarket Connect",
+    category: "Agriculture",
+    status: "Prototype",
+    shortDesc: "Direct market link for small farmers",
+    impact: "40% income increase for farmers",
   },
-  {
-    id: 4,
-    title: 'Tourism VR Experience',
-    institution: 'RDB',
-    status: 'Draft',
-    daysLeft: 8,
-    description: 'Virtual Reality tour experience for Akagera National Park.',
-    budget: '30M RWF',
-    deadline: 'Dec 01, 2024',
-    image: 'https://images.unsplash.com/photo-1516426122078-c23e2831f873?q=80&w=200&auto=format&fit=crop'
-  },
-  {
-    id: 5,
-    title: 'Waste Management App',
-    institution: 'EnviroServe',
-    status: 'Open',
-    daysLeft: 15,
-    description: 'A platform to schedule and track electronic waste collection from households.',
-    budget: '10M RWF',
-    deadline: 'Dec 10, 2024',
-    image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=200&auto=format&fit=crop'
-  },
-  {
-    id: 6,
-    title: 'Smart Irrigation System',
-    institution: 'RAB',
-    status: 'Open',
-    daysLeft: 25,
-    description: 'IoT-based irrigation control system for rice farmers in Rwamagana.',
-    budget: '20M RWF',
-    deadline: 'Dec 20, 2024',
-    image: 'https://images.unsplash.com/photo-1615811361523-6bd03c7799a4?q=80&w=200&auto=format&fit=crop'
-  }
 ];
 
-// --- 3. IMPACT STORIES DATA ---
-const impactStories = [
+const openCalls = [
   {
     id: 1,
-    title: "From Classroom to CEO",
-    quote: "The mentorship I received through RP InnoHub helped me turn my final year project into a fully funded startup employing 5 people.",
-    author: "Jean-Claude N.",
-    role: "RP Alumni & CEO, AgriTech Solutions",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop"
+    title: "Digital Health Records System",
+    institution: "Ministry of Health",
+    budget: "15M – 25M RWF",
+    deadline: "30 Nov 2026",
   },
   {
     id: 2,
-    title: "Saving Lives Digitally",
-    quote: "Thanks to the 'TeleHealth' solution found here, our district clinic reduced patient wait times by 40% and improved care.",
-    author: "Dr. Marie Claire",
-    role: "Director, Bugesera Health Center",
-    image: "https://www.womenlifthealth.org/wp-content/uploads/2025/03/Dr.-Marie-Claire-Wangari-MBChB-MSc.png"
+    title: "Smart Traffic Management",
+    institution: "City of Kigali",
+    budget: "50M+ RWF",
+    deadline: "20 Dec 2026",
   },
   {
     id: 3,
-    title: "Boosting Coffee Exports",
-    quote: "We found a developer here who built our cooperative's supply chain tracker. Now we export directly to Europe with full transparency.",
-    author: "Emmanuel K.",
-    role: "President, Kivu Coffee Coop",
-    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=800&auto=format&fit=crop"
-  }
+    title: "Coffee Supply Chain Tracker",
+    institution: "NAEB",
+    budget: "18M RWF",
+    deadline: "15 Jan 2027",
+  },
 ];
 
+// ── Home Page Component ──────────────────────────────────────────────────
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading (in real app → fetch from API)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="space-y-24 pb-20">
-      
-      {/* 1. HERO SECTION */}
-      <section className="relative py-24 md:py-48 overflow-hidden flex items-center justify-center min-h-[85vh]">
-        <div 
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat fixed-background"
-          style={{ 
-            backgroundImage: "url('https://innov8tiv.com/wp-content/uploads/2020/11/African-Development-Bank-signs-grant-agreement-to-support-the-Rwanda-Coding-Academy-585x390.jpg')" 
-          }}
-        />
-        <div className="absolute inset-0 z-0 bg-slate-950/85" />
-
-        <div className="container mx-auto px-4 text-center relative z-10 animate-slide-up">
-          <h1 className="text-4xl md:text-7xl font-bold mb-6 text-white tracking-tight leading-tight drop-shadow-lg">
-            Innovating for <span className="text-blue-600">Rwanda's</span> <br />
-            Digital Future
+    <div className="min-h-screen bg-white">
+      {/* ── Hero Section ────────────────────────────────────────────────── */}
+      <section className="relative bg-slate-900 text-white">
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="relative container mx-auto max-w-6xl px-4 py-16 md:py-28 text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight mb-6">
+            Innovate for Rwanda
           </h1>
-          <p className="text-lg md:text-2xl text-slate-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
-            The central hub for Rwanda Polytechnic students to showcase solutions, find funding, and solve real community challenges.
+          <p className="text-lg md:text-xl text-slate-200 max-w-3xl mx-auto mb-10">
+            Publish your IT solutions. Apply to real projects.  
+            Connect academia with institutions for real impact.
           </p>
-          <div className="flex flex-col md:flex-row gap-6 justify-center">
-            <Link to="/register">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-800 text-white font-bold text-lg px-10 py-7 h-auto shadow-lg hover:-translate-y-1 transition-all rounded-xl">
-                Start Innovation Journey <ArrowRight className="ml-2" />
-              </Button>
-            </Link>
-            <Link to="/calls">
-              <Button size="lg" variant="outline" className="text-white border-white/20 bg-white/5 font-bold text-lg px-10 py-7 h-auto shadow-lg hover:-translate-y-1 transition-all rounded-xl">
-                Browse Opportunities
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
 
-      {/* 2. STATS SECTION */}
-      <section className="container mx-auto px-4 -mt-20 relative z-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[
-            { label: 'Active Innovators', val: '1,200+', icon: Users },
-            { label: 'Published Projects', val: '450+', icon: Zap },
-            { label: 'Open Calls', val: '24', icon: Search },
-            { label: 'Success Stories', val: '85', icon: Trophy },
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-slate-900/95 backdrop-blur-md p-8 rounded-2xl border border-slate-800 shadow-2xl hover:border-rp-gold/30 transition-all duration-300 hover:-translate-y-2 group">
-              <stat.icon className="w-10 h-10 mx-auto text-rp-gold mb-4 group-hover:scale-110 transition-transform" />
-              <div className="text-4xl font-bold text-white mb-1">{stat.val}</div>
-              <div className="text-sm text-slate-400 font-medium uppercase tracking-wider">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. FEATURED INNOVATIONS */}
-      <section className="container mx-auto px-4">
-        <div className="flex justify-between items-end mb-12 border-b border-slate-800 pb-4">
-          <div>
-            <h2 className="text-3xl font-bold text-white">Featured Innovations</h2>
-            <p className="text-slate-400 mt-2 text-lg">Groundbreaking solutions from RP Campuses.</p>
-          </div>
-          <Link to="/innovations">
-            <Button variant="ghost" className="text-blue-600 hover:text-white hover:bg-gold/5">
-              View Gallery &rarr;
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-[#0a77bc] hover:bg-[#095e99] text-white px-8"
+            >
+              <Link to="/register">Become an Innovator</Link>
             </Button>
-          </Link>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredProjects.map((project, idx) => (
-            <div key={project.id} className="animate-slide-up" style={{ animationDelay: `${idx * 100}ms` }}>
-              <ProjectCard project={project} />
-            </div>
-          ))}
+
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-slate-400 text-white hover:bg-slate-800 px-8"
+            >
+              <Link to="/calls">See Open Calls</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
-      {/* 4. OPEN CALLS (UPDATED: 3 COLUMNS) */}
-      <section className="py-24 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-end mb-12 border-b border-slate-200 pb-4">
-            <div>
-              <h2 className="text-3xl font-bold text-rp-blue">Calls for Development</h2>
-              <p className="text-slate-500 mt-2 text-lg">Opportunities from Industry & Government.</p>
-            </div>
-            <Link to="/calls">
-              <Button variant="ghost" className="text-rp-blue hover:text-rp-gold hover:bg-rp-blue/5">
-                Browse All Calls &rarr;
-              </Button>
-            </Link>
-          </div>
-
-          {/* CHANGED HERE: md:grid-cols-3 ensures three columns on medium+ screens */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {activeCalls.map((call, idx) => (
-              <div key={call.id} className="animate-slide-up" style={{ animationDelay: `${idx * 100}ms` }}>
-                <CallCard call={call} />
+      {/* ── Quick Stats ─────────────────────────────────────────────────── */}
+      <section className="py-10 bg-slate-50 border-b border-slate-200">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+            {[
+              { label: "Innovators", value: "1,240", icon: Users },
+              { label: "Projects", value: "460", icon: Briefcase },
+              { label: "Active Calls", value: "27", icon: Search },
+              { label: "Success Stories", value: "89", icon: Award },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="border border-slate-200 rounded-md p-4 bg-white"
+              >
+                <item.icon className="h-6 w-6 mx-auto text-[#0a77bc] mb-2" />
+                <div className="text-2xl font-bold text-[#0a77bc]">
+                  {item.value}
+                </div>
+                <div className="text-sm text-slate-600 mt-1">{item.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. IMPACT STORIES */}
-      <section className="container mx-auto px-4 pb-10">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Real Impact. Real Stories.</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            See how the RP Innovation Hub is bridging the gap between academia and industry.
-          </p>
-        </div>
+      {/* ── Featured Projects ───────────────────────────────────────────── */}
+      <section className="py-12">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-slate-900">
+              Featured Innovations
+            </h2>
+            <Button variant="ghost" asChild className="text-[#0a77bc]">
+              <Link to="/innovations" className="flex items-center gap-1">
+                View all <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {impactStories.map((story, idx) => (
-            <Card key={story.id} className="bg-slate-900 border-slate-800 text-slate-200 hover:border-rp-gold/30 transition-all duration-500 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: `${idx * 150}ms` }}>
-              <div className="h-48 overflow-hidden rounded-t-xl relative">
-                <div className="absolute inset-0 bg-rp-blue/20 mix-blend-multiply z-10" />
-                <img src={story.image} alt={story.author} className="w-full h-full object-cover" />
-              </div>
-              <CardContent className="p-8 relative">
-                <Quote className="absolute top-6 left-6 text-rp-gold/20 w-12 h-12" />
-                <p className="text-lg italic text-slate-300 mb-6 relative z-10 leading-relaxed">
-                  "{story.quote}"
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-1 bg-rp-gold rounded-full"></div>
-                  <div>
-                    <h4 className="font-bold text-white text-lg">{story.author}</h4>
-                    <p className="text-rp-gold text-sm font-medium">{story.role}</p>
+          <Separator className="mb-8" />
+
+          {isLoading ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="border border-slate-200 rounded-md p-4">
+                  <Skeleton className="h-40 w-full mb-3" />
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-full mb-4" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-6 w-20" />
+                    <Skeleton className="h-6 w-24" />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              ))}
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {featuredProjects.map((project) => (
+                <Card
+                  key={project.id}
+                  className="border-slate-200 hover:border-slate-300 transition-colors"
+                >
+                  <CardContent className="p-5">
+                    <h3 className="font-medium text-lg mb-2 line-clamp-2">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm text-slate-600 mb-4 line-clamp-3">
+                      {project.shortDesc}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      <Badge variant="secondary">{project.category}</Badge>
+                      <Badge variant="outline">{project.status}</Badge>
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Impact: {project.impact}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
+      {/* ── Open Calls ───────────────────────────────────────────────────── */}
+      <section className="py-12 bg-slate-50 border-t border-slate-200">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-slate-900">
+              Open Calls for IT Projects
+            </h2>
+            <Button variant="ghost" asChild className="text-[#0a77bc]">
+              <Link to="/calls" className="flex items-center gap-1">
+                View all <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+
+          <Separator className="mb-8" />
+
+          {isLoading ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="border border-slate-200 rounded-md p-5">
+                  <Skeleton className="h-6 w-4/5 mb-3" />
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4 mb-4" />
+                  <Skeleton className="h-5 w-32" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {openCalls.map((call) => (
+                <Card
+                  key={call.id}
+                  className="border-slate-200 hover:border-slate-300 transition-colors"
+                >
+                  <CardContent className="p-5">
+                    <h3 className="font-medium text-lg mb-2 line-clamp-2">
+                      {call.title}
+                    </h3>
+                    <p className="text-sm text-slate-600 mb-1">
+                      {call.institution}
+                    </p>
+                    <div className="text-sm text-slate-600 space-y-1 mt-3">
+                      <div>Budget: {call.budget}</div>
+                      <div>Deadline: {call.deadline}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── Simple CTA at bottom ─────────────────────────────────────────── */}
+      <section className="py-12 border-t border-slate-200 bg-white">
+        <div className="container mx-auto max-w-6xl px-4 text-center">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+            Ready to start?
+          </h2>
+          <p className="text-slate-600 mb-6 max-w-xl mx-auto">
+            Publish your project or find the right call for your team.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild className="bg-[#0a77bc] hover:bg-[#095e99]">
+              <Link to="/projects/new">Publish Project</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/calls">Browse Calls</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

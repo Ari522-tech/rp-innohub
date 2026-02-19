@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import CallCard from '@/components/shared/CallCard';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
 
-// --- MOCK DATA: OPEN CALLS ---
+// ── Mock data (replace with real API data later) ────────────────────────────
 const allCalls = [
   {
     id: 1,
@@ -13,10 +16,10 @@ const allCalls = [
     institution: 'Ministry of Health',
     status: 'Open',
     daysLeft: 12,
-    description: 'We are looking for a secure, scalable solution to digitize patient records across 50 clinics.',
-    budget: '15M - 25M RWF',
-    deadline: 'Nov 30, 2024',
-    image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=200&auto=format&fit=crop'
+    budget: '15M – 25M RWF',
+    deadline: '30 Nov 2026',
+    description: 'Secure, scalable digitization of patient records across 50+ health facilities.',
+    scope: 'Nationwide clinic integration',
   },
   {
     id: 2,
@@ -24,10 +27,10 @@ const allCalls = [
     institution: 'City of Kigali',
     status: 'Open',
     daysLeft: 5,
-    description: 'Develop an AI-powered traffic light control system to reduce congestion during peak hours.',
     budget: '50M+ RWF',
-    deadline: 'Nov 20, 2024',
-    image: 'https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=200&auto=format&fit=crop'
+    deadline: '20 Dec 2026',
+    description: 'AI-powered adaptive traffic signal control to reduce peak-hour congestion.',
+    scope: 'Urban traffic optimization',
   },
   {
     id: 3,
@@ -35,140 +38,206 @@ const allCalls = [
     institution: 'NAEB',
     status: 'Open',
     daysLeft: 20,
-    description: 'Blockchain-based system to trace coffee beans from washing stations to export.',
     budget: '18M RWF',
-    deadline: 'Dec 15, 2024',
-    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=200&auto=format&fit=crop'
+    deadline: '15 Jan 2027',
+    description: 'End-to-end traceability system for coffee from farm to export.',
+    scope: 'Agricultural supply chain',
   },
   {
     id: 4,
-    title: 'Tourism VR Experience',
-    institution: 'RDB',
-    status: 'Draft',
-    daysLeft: 8,
-    description: 'Virtual Reality tour experience for Akagera National Park.',
+    title: 'E-Government Portal Enhancement',
+    institution: 'MINICT',
+    status: 'Open',
+    daysLeft: 18,
     budget: '30M RWF',
-    deadline: 'Dec 01, 2024',
-    image: 'https://images.unsplash.com/photo-1516426122078-c23e2831f873?q=80&w=200&auto=format&fit=crop'
+    deadline: '10 Feb 2027',
+    description: 'Upgrade of public service platform with improved authentication and integration.',
+    scope: 'Public service digitization',
   },
   {
     id: 5,
-    title: 'Waste Management App',
-    institution: 'EnviroServe',
-    status: 'Open',
-    daysLeft: 15,
-    description: 'A platform to schedule and track electronic waste collection from households.',
-    budget: '10M RWF',
-    deadline: 'Dec 10, 2024',
-    image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=200&auto=format&fit=crop'
-  },
-  {
-    id: 6,
-    title: 'Smart Irrigation System',
+    title: 'Smart Irrigation Control',
     institution: 'RAB',
     status: 'Open',
     daysLeft: 25,
-    description: 'IoT-based irrigation control system for rice farmers in Rwamagana.',
     budget: '20M RWF',
-    deadline: 'Dec 20, 2024',
-    image: 'https://images.unsplash.com/photo-1615811361523-6bd03c7799a4?q=80&w=200&auto=format&fit=crop'
+    deadline: '28 Feb 2027',
+    description: 'IoT-based irrigation system for rice farmers in Rwamagana district.',
+    scope: 'Agricultural water management',
   },
-  {
-    id: 7,
-    title: 'Fintech API Gateway',
-    institution: 'BK TechHouse',
-    status: 'Open',
-    daysLeft: 10,
-    description: 'Secure API gateway for integrating third-party payment providers.',
-    budget: '40M RWF',
-    deadline: 'Nov 28, 2024',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=200&auto=format&fit=crop'
-  }
 ];
 
 const Calls = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Filter Logic
-  const filteredCalls = allCalls.filter(call => {
-    const matchesSearch = call.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          call.institution.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "All" || call.status === statusFilter;
-    
+  // Simulate loading (later replace with real fetch)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const filteredCalls = allCalls.filter((call) => {
+    const matchesSearch =
+      call.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      call.institution.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'All' || call.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 pt-10">
-      <div className="container mx-auto px-4 space-y-12">
-        
-        {/* 1. Header Section */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 animate-slide-up">
-          <h1 className="text-4xl md:text-5xl font-bold text-rp-blue">
-            Find <span className="text-rp-gold">Opportunities</span>
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto max-w-6xl px-4 py-10 md:py-12">
+        {/* Header */}
+        <div className="mb-10 text-center">
+          <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
+            Calls for IT Projects
           </h1>
-          <p className="text-slate-500 text-lg">
-            Browse open calls from government institutions and industry partners looking for your solutions.
+          <p className="mt-3 text-slate-600 max-w-2xl mx-auto">
+            Browse opportunities from institutions seeking innovative IT solutions
           </p>
         </div>
 
-        {/* 2. Search & Filter Bar */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-lg flex flex-col md:flex-row gap-4 items-center justify-between animate-slide-up delay-100">
-          
-          {/* Search Input */}
-          <div className="relative w-full md:max-w-md">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-            <Input 
-              placeholder="Search by title or institution..." 
-              className="pl-10 bg-slate-50 border-slate-200 text-slate-900 focus-visible:ring-rp-blue"
+        {/* Search & Filter */}
+        <div className="mb-10 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder="Search by title or institution..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 border-neutral-300 focus-visible:ring-primary/30 focus-visible:border-primary/50"
             />
           </div>
 
-          {/* Status Filter */}
-          <div className="flex gap-4 w-full md:w-auto">
-             <Select onValueChange={setStatusFilter} defaultValue="All">
-              <SelectTrigger className="w-[180px] bg-slate-50 border-slate-200 text-slate-700 focus:ring-rp-blue">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent className="bg-white border-slate-200 text-slate-700">
-                <SelectItem value="All">All Statuses</SelectItem>
-                <SelectItem value="Open">Open</SelectItem>
-                <SelectItem value="Draft">Draft / Upcoming</SelectItem>
-                <SelectItem value="Closed">Closed</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button className="bg-rp-blue hover:bg-blue-900 text-white">
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </Button>
-          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-full sm:w-[180px] border-neutral-300">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All Statuses</SelectItem>
+              <SelectItem value="Open">Open</SelectItem>
+              <SelectItem value="Draft">Draft / Upcoming</SelectItem>
+              <SelectItem value="Closed">Closed</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button
+            variant="outline"
+            className="border-neutral-300 text-neutral-700 hover:bg-neutral-100"
+            onClick={() => {
+              setSearchTerm('');
+              setStatusFilter('All');
+            }}
+          >
+            Clear
+          </Button>
         </div>
 
-        {/* 3. Calls Grid */}
-        {filteredCalls.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCalls.map((call, idx) => (
-              <div key={call.id} className="animate-slide-up" style={{ animationDelay: `${idx * 100}ms` }}>
-                <CallCard call={call} />
+        <Separator className="mb-8" />
+
+        {/* Calls Grid */}
+        {isLoading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="border border-neutral-200 rounded-md overflow-hidden">
+                <div className="p-5 space-y-3">
+                  <Skeleton className="h-6 w-4/5 mb-2" />
+                  <Skeleton className="h-4 w-full mb-1" />
+                  <Skeleton className="h-4 w-3/4 mb-4" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-5 w-28" />
+                    <Skeleton className="h-5 w-32" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
+        ) : filteredCalls.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCalls.map((call) => (
+              <Card
+                key={call.id}
+                className="border-neutral-200 hover:border-neutral-300 transition-colors duration-150 flex flex-col"
+              >
+                <CardContent className="p-5 flex flex-col flex-1">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <h3 className="font-medium text-base line-clamp-2 flex-1">
+                      {call.title}
+                    </h3>
+                    <Badge
+                      variant="secondary"
+                      className={`text-xs ${
+                        call.status === 'Open'
+                          ? 'bg-success/10 text-success-700 border-success/20'
+                          : 'bg-warning/10 text-warning-700 border-warning/20'
+                      }`}
+                    >
+                      {call.status}
+                    </Badge>
+                  </div>
+
+                  <p className="text-sm text-neutral-600 mb-4 flex-1 line-clamp-3">
+                    {call.description}
+                  </p>
+
+                  <div className="text-xs text-neutral-600 space-y-1.5 mt-auto">
+                    <div className="flex justify-between">
+                      <span className="font-medium">Institution:</span>
+                      <span>{call.institution}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Budget:</span>
+                      <span>{call.budget}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Deadline:</span>
+                      <span>{call.deadline}</span>
+                    </div>
+                    {call.daysLeft && (
+                      <div className="flex justify-between font-medium mt-2 pt-2 border-t border-neutral-200">
+                        <span>Days left:</span>
+                        <span
+                          className={
+                            call.daysLeft <= 7
+                              ? 'text-danger'
+                              : call.daysLeft <= 14
+                              ? 'text-warning'
+                              : 'text-success'
+                          }
+                        >
+                          {call.daysLeft}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-xl border border-dashed border-slate-300">
-            <h3 className="text-xl text-slate-900 font-semibold">No calls found</h3>
-            <p className="text-slate-500 mt-2">Try adjusting your search criteria.</p>
-            <Button 
-              variant="link" 
-              className="text-rp-blue mt-4 font-bold" 
-              onClick={() => {setSearchTerm(""); setStatusFilter("All");}}
+          <div className="text-center py-16 border border-dashed border-neutral-300 rounded-md bg-neutral-50">
+            <h3 className="text-lg font-medium text-neutral-800 mb-2">
+              No calls found
+            </h3>
+            <p className="text-neutral-600 mb-4">
+              Try changing your search term or status filter.
+            </p>
+            <Button
+              variant="outline"
+              className="border-neutral-300"
+              onClick={() => {
+                setSearchTerm('');
+                setStatusFilter('All');
+              }}
             >
-              Clear Filters
+              Reset Filters
             </Button>
           </div>
         )}
-
       </div>
     </div>
   );

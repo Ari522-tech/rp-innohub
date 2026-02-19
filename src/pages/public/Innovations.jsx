@@ -1,181 +1,225 @@
-import React, { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import ProjectCard from '@/components/shared/ProjectCard';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
 
-// --- MOCK DATA: ALL INNOVATIONS ---
+// ── Mock data (replace with real API data later) ────────────────────────────
 const allProjects = [
-  { 
-    id: 1, 
-    title: 'Solarify Rwanda', 
-    category: 'Energy', 
-    status: 'Active', 
-    description: 'Affordable solar monitoring for rural households using IoT sensors developed in Kigali.', 
+  {
+    id: 1,
+    title: 'Solarify Rwanda',
+    category: 'Energy',
+    status: 'Active',
+    description: 'Affordable solar monitoring system using IoT sensors for rural households.',
     technologies: ['IoT', 'React', 'MQTT'],
-    image: 'https://solektra.rw/wp-content/uploads/2023/01/solar-1024x684.png'
+    impact: 'Reduced energy costs by 30% for over 500 households',
   },
-  { 
-    id: 2, 
-    title: 'E-Learning Hub', 
-    category: 'Education', 
-    status: 'Completed', 
-    description: 'A platform connecting RP students with digital libraries and peer tutoring.', 
+  {
+    id: 2,
+    title: 'E-Learning Hub',
+    category: 'Education',
+    status: 'Completed',
+    description: 'Digital library and peer tutoring platform for Rwanda Polytechnic students.',
     technologies: ['Python', 'Django', 'PostgreSQL'],
-    image: 'https://tse4.mm.bing.net/th/id/OIP.jN3HpNEVzhp7-2ihardOKAHaE8?rs=1&pid=ImgDetMain&o=7&rm=3'
+    impact: 'Improved learning outcomes for 2,000+ students',
   },
-  { 
-    id: 3, 
-    title: 'AgriMarket Connect', 
-    category: 'Agriculture', 
-    status: 'Prototype', 
-    description: 'Connecting small-scale farmers directly to urban markets in Musanze and Huye.', 
+  {
+    id: 3,
+    title: 'AgriMarket Connect',
+    category: 'Agriculture',
+    status: 'Prototype',
+    description: 'Direct market linkage platform for smallholder farmers in rural districts.',
     technologies: ['Flutter', 'Firebase'],
-    image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800&auto=format&fit=crop'
+    impact: 'Increased farmer income by connecting to 1,500+ buyers',
   },
-  { 
-    id: 4, 
-    title: 'MobiCash Flow', 
-    category: 'Fintech', 
-    status: 'Active', 
-    description: 'Simplifying mobile money integration for small roadside businesses.', 
-    technologies: ['Node.js', 'USSD API'],
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=800&auto=format&fit=crop'
+  {
+    id: 4,
+    title: 'TeleHealth Rwanda',
+    category: 'Health',
+    status: 'Active',
+    description: 'Telemedicine platform enabling remote consultations and health record access.',
+    technologies: ['React Native', 'Node.js'],
+    impact: 'Served 10,000+ consultations in underserved areas',
   },
-  { 
-    id: 5, 
-    title: 'TeleHealth Rwanda', 
-    category: 'Health', 
-    status: 'Under Review', 
-    description: 'Remote consultation app linking rural health centers to specialists in Kigali.', 
-    technologies: ['React Native', 'WebRTC'],
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop'
+  {
+    id: 5,
+    title: 'Smart Traffic Management',
+    category: 'Transport',
+    status: 'In Development',
+    description: 'AI-based system to optimize traffic flow in urban areas.',
+    technologies: ['Python', 'TensorFlow', 'IoT'],
   },
-  { 
-    id: 6, 
-    title: 'Smart Moto', 
-    category: 'Transport', 
-    status: 'Concept', 
-    description: 'GPS tracking and safety monitoring for motorcycle taxis.', 
-    technologies: ['Google Maps API', 'IoT'],
-    image: 'https://images.unsplash.com/photo-1596484552993-87f5e317c828?q=80&w=800&auto=format&fit=crop'
+  {
+    id: 6,
+    title: 'Coffee Supply Chain Tracker',
+    category: 'Agriculture',
+    status: 'Active',
+    description: 'Blockchain-based traceability from farm to export.',
+    technologies: ['Solidity', 'React', 'Node.js'],
   },
-  { 
-    id: 7, 
-    title: 'Kigali Transit App', 
-    category: 'Transport', 
-    status: 'Active', 
-    description: 'Real-time bus schedules and route planning for Kigali public transport.', 
-    technologies: ['Flutter', 'Google Maps'],
-    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=800&auto=format&fit=crop'
-  },
-  { 
-    id: 8, 
-    title: 'MadeInRwanda Market', 
-    category: 'E-Commerce', 
-    status: 'Prototype', 
-    description: 'Digital marketplace exclusively for locally manufactured products.', 
-    technologies: ['Next.js', 'Stripe', 'MongoDB'],
-    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop'
-  },
-  { 
-    id: 9, 
-    title: 'AquaSmart', 
-    category: 'Agriculture', 
-    status: 'Concept', 
-    description: 'Automated irrigation system for rice paddies in Rwamagana.', 
-    technologies: ['Arduino', 'C++'],
-    image: 'https://images.unsplash.com/photo-1615811361523-6bd03c7799a4?q=80&w=800&auto=format&fit=crop'
-  }
 ];
 
 const Innovations = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [category, setCategory] = useState('All');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Filter Logic
-  const filteredProjects = allProjects.filter(project => {
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          project.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = category === "All" || project.category === category;
-    
+  // Simulate loading (later replace with real data fetch)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const filteredProjects = allProjects.filter((project) => {
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = category === 'All' || project.category === category;
     return matchesSearch && matchesCategory;
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 pt-10">
-      <div className="container mx-auto px-4 space-y-12">
-        
-        {/* 1. Header Section */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 animate-slide-up">
-          <h1 className="text-4xl md:text-5xl font-bold text-rp-blue">
-            Innovation <span className="text-rp-gold">Gallery</span>
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto max-w-6xl px-4 py-10 md:py-12">
+        {/* Header */}
+        <div className="mb-10 text-center">
+          <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
+            Our Innovations
           </h1>
-          <p className="text-slate-500 text-lg">
-            Explore the cutting-edge solutions developed by Rwanda Polytechnic's brightest minds.
+          <p className="mt-3 text-slate-600 max-w-2xl mx-auto">
+            Discover socio-economic IT solutions developed by Rwanda Polytechnic innovators
           </p>
         </div>
 
-        {/* 2. Search & Filter Bar */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xl flex flex-col md:flex-row gap-4 items-center justify-between animate-slide-up delay-100">
-          
-          {/* Search Input */}
-          <div className="relative w-full md:max-w-md">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-            <Input 
-              placeholder="Search projects..." 
-              className="pl-10 bg-slate-50 border-slate-200 text-slate-900 focus-visible:ring-rp-blue"
+        {/* Search & Filter */}
+        <div className="mb-10 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder="Search projects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 border-slate-300 focus-visible:ring-[#0a77bc]/30"
             />
           </div>
 
-          {/* Category Filter */}
-          <div className="flex gap-4 w-full md:w-auto">
-             <Select onValueChange={setCategory} defaultValue="All">
-              <SelectTrigger className="w-[180px] bg-slate-50 border-slate-200 text-slate-700 focus:ring-rp-blue">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent className="bg-white border-slate-200 text-slate-700">
-                <SelectItem value="All">All Categories</SelectItem>
-                <SelectItem value="Agriculture">Agriculture</SelectItem>
-                <SelectItem value="Health">Health</SelectItem>
-                <SelectItem value="Fintech">Fintech</SelectItem>
-                <SelectItem value="Education">Education</SelectItem>
-                <SelectItem value="Transport">Transport</SelectItem>
-                <SelectItem value="Energy">Energy</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button className="bg-rp-blue hover:bg-blue-900 text-white shadow-md">
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </Button>
-          </div>
+          <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger className="w-full sm:w-[180px] border-slate-300">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All Categories</SelectItem>
+              <SelectItem value="Agriculture">Agriculture</SelectItem>
+              <SelectItem value="Education">Education</SelectItem>
+              <SelectItem value="Energy">Energy</SelectItem>
+              <SelectItem value="Health">Health</SelectItem>
+              <SelectItem value="Transport">Transport</SelectItem>
+              <SelectItem value="Fintech">Fintech</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button
+            variant="outline"
+            className="border-slate-300 text-slate-700 hover:bg-slate-100"
+            onClick={() => {
+              setSearchTerm('');
+              setCategory('All');
+            }}
+          >
+            Clear
+          </Button>
         </div>
 
-        {/* 3. Project Grid (Gallery) */}
-        {filteredProjects.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project, idx) => (
-              <div key={project.id} className="animate-slide-up" style={{ animationDelay: `${idx * 100}ms` }}>
-                <ProjectCard project={project} />
+        <Separator className="mb-8" />
+
+        {/* Projects Grid */}
+        {isLoading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="border border-slate-200 rounded-md overflow-hidden">
+                <Skeleton className="h-48 w-full" />
+                <div className="p-5 space-y-3">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-6 w-20" />
+                    <Skeleton className="h-6 w-24" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
+        ) : filteredProjects.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project) => (
+              <Card
+                key={project.id}
+                className="border-slate-200 hover:border-slate-300 transition-colors duration-150 overflow-hidden flex flex-col"
+              >
+                {/* Optional image - you can remove if you prefer text-only cards */}
+                <div className="h-48 bg-slate-100">
+                  {/* <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  /> */}
+                </div>
+
+                <CardContent className="p-5 flex flex-col flex-1">
+                  <h3 className="font-medium text-base mb-2 line-clamp-2">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-sm text-slate-600 mb-4 flex-1 line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {project.impact && (
+                    <p className="text-xs text-slate-500 mb-4">
+                      <span className="font-medium">Impact:</span> {project.impact}
+                    </p>
+                  )}
+
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    <Badge variant="secondary" className="bg-slate-100 text-slate-700">
+                      {project.category}
+                    </Badge>
+                    <Badge variant="outline" className="text-slate-600">
+                      {project.status}
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-xl border border-dashed border-slate-300 shadow-sm">
-            <h3 className="text-xl text-slate-900 font-semibold">No projects found</h3>
-            <p className="text-slate-500 mt-2">Try adjusting your search or filter criteria.</p>
-            <Button 
-              variant="link" 
-              className="text-rp-blue mt-4 font-bold" 
-              onClick={() => {setSearchTerm(""); setCategory("All");}}
+          <div className="text-center py-16 border border-dashed border-slate-300 rounded-md bg-slate-50">
+            <h3 className="text-lg font-medium text-slate-800 mb-2">
+              No projects found
+            </h3>
+            <p className="text-slate-500 mb-4">
+              Try changing your search term or category filter.
+            </p>
+            <Button
+              variant="outline"
+              className="border-slate-300"
+              onClick={() => {
+                setSearchTerm('');
+                setCategory('All');
+              }}
             >
-              Clear Filters
+              Reset Filters
             </Button>
           </div>
         )}
-
       </div>
     </div>
   );

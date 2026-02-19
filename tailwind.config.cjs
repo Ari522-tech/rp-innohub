@@ -10,92 +10,153 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: {
+        DEFAULT: '1rem',
+        sm: '1.5rem',
+        lg: '2rem',
+      },
       screens: {
-        "2xl": "1400px",
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1400px',
       },
     },
+
     extend: {
+      fontFamily: {
+        sans: ['Vastago Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
+
       colors: {
-        // --- RWANDA POLYTECHNIC BRANDING ---
-        rp: {
-          blue: "#003366",   // Official Deep Navy
-          gold: "#FFD700",   // Official Gold/Yellow
-          light: "#F0F4F8",  // Professional Background
-          
-          // --- NEW: Low Luminance (Dark Mode) Colors ---
-          dark: "#020617",   // Deep Slate Background (Eye Comfort)
-          card: "#0f172a",   // Slightly Lighter Card Background
-        },
-        // --- UI COMPONENT MAPPINGS ---
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        // ── Updated primary palette – more modern & attractive blue ───────
         primary: {
-          DEFAULT: "#003366", // RP Blue
-          foreground: "hsl(var(--primary-foreground))",
+          50:  '#f0f7ff',
+          100: '#e0f0fe',
+          200: '#bae0fd',
+          300: '#7cc8fc',
+          400: '#36aefb',
+          500: '#0a95e8',      // ← New main primary – more vivid & fresh
+          600: '#0878c2',
+          700: '#07609c',
+          800: '#084f80',
+          900: '#0a4269',
+          DEFAULT: '#0a95e8',
+          foreground: '#ffffff',
         },
+
+        // Secondary – softer complementary blue-gray for hover/states
         secondary: {
-          DEFAULT: "#FFD700", // RP Gold
-          foreground: "#003366",
+          DEFAULT: '#3b82f6',
+          foreground: '#ffffff',
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
+
+        // Very restrained accent – only for urgent/important elements
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: '#fef200',
+          foreground: '#1e293b',
+        },
+
+        // ── Neutral palette – warmer & more pleasant than pure cold gray ──
+        neutral: {
+          50:  '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+        },
+
+        // Background & surface colors
+        background: '#ffffff',
+        surface: {
+          DEFAULT: '#f9fafb',
+          subtle: '#f0f5ff',   // very light blue tint
+        },
+
+        muted: {
+          DEFAULT: '#e5e7eb',
+          foreground: '#6b7280',
+        },
+
+        border: '#d1d5db',
+        input: '#d1d5db',
+        ring: '#0a95e8',
+
+        foreground: '#111827',
+        'foreground-muted': '#4b5563',
+        'foreground-subtle': '#6b7280',
+
+        // Status colors – clean & professional
+        success: {
+          DEFAULT: '#10b981',
+          foreground: '#ffffff',
+        },
+        warning: {
+          DEFAULT: '#f59e0b',
+          foreground: '#ffffff',
+        },
+        danger: {
+          DEFAULT: '#ef4444',
+          foreground: '#ffffff',
+        },
+
+        // shadcn/ui compatibility
+        card: {
+          DEFAULT: '#ffffff',
+          foreground: '#111827',
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: '#ffffff',
+          foreground: '#111827',
         },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        destructive: {
+          DEFAULT: '#ef4444',
+          foreground: '#ffffff',
         },
       },
+
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: '0.625rem',   // 10px – slightly softer but still clean
+        md: '0.5rem',     // 8px
+        sm: '0.375rem',   // 6px
+        DEFAULT: '0.5rem',
       },
-      // --- NEW: ANIMATIONS FOR FLOWING CARDS ---
+
+      spacing: {
+        4.5: '1.125rem',
+        7: '1.75rem',
+        8.5: '2.125rem',
+        9: '2.25rem',
+        11: '2.75rem',
+      },
+
+      // Minimal animations – only functional ones
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+        'fade-in': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        // Floating effect (up and down gentle motion)
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        // Slide Up effect (smooth entrance)
-        slideUp: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+        'fade-in-down': {
+          from: { opacity: '0', transform: 'translateY(-8px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        // New flowing animations
-        "float": "float 6s ease-in-out infinite",
-        "slide-up": "slideUp 0.8s ease-out forwards",
+        'fade-in': 'fade-in 0.3s ease-out forwards',
+        'fade-in-down': 'fade-in-down 0.35s ease-out forwards',
+        'accordion-down': 'fade-in-down 0.2s ease-out',
+        'accordion-up': 'fade-in 0.2s ease-out reverse',
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+  ],
 }

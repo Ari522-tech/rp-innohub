@@ -1,87 +1,164 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
+import { Calendar, Clock, MapPin, BookOpen } from 'lucide-react';
+
+// ── Mock training data (replace with real data from backend later) ───────
+const trainingData = [
+  {
+    id: 1,
+    title: "IoT Systems Development Bootcamp",
+    type: "Bootcamp",
+    date: "10–15 Dec 2026",
+    location: "RP Kigali College",
+    description: "Hands-on training in building IoT solutions for real-world applications.",
+    status: "Open",
+  },
+  {
+    id: 2,
+    title: "Entrepreneurship 101: From Idea to Market",
+    type: "Workshop",
+    date: "25 Nov 2026",
+    location: "Online (Microsoft Teams)",
+    description: "Learn the essentials of turning ideas into viable businesses.",
+    status: "Upcoming",
+  },
+  {
+    id: 3,
+    title: "Advanced Python for Data Science",
+    type: "Certification Course",
+    date: "10 Jan – 10 Feb 2027",
+    location: "RP Huye College",
+    description: "Deep dive into Python tools and techniques for data analysis.",
+    status: "Open",
+  },
+  {
+    id: 4,
+    title: "PCB Design & Fabrication Workshop",
+    type: "Workshop",
+    date: "30 Nov 2026",
+    location: "RP Tumba College",
+    description: "Practical introduction to printed circuit board design.",
+    status: "Open",
+  },
+  {
+    id: 5,
+    title: "AI for Socio-Economic Impact",
+    type: "Short Course",
+    date: "15–20 Jan 2027",
+    location: "Hybrid (Kigali + Online)",
+    description: "Applying artificial intelligence to development challenges.",
+    status: "Registration Open",
+  },
+];
 
 const Training = () => {
-  const trainings = [
-    {
-      id: 1,
-      title: "IoT Systems Development Bootcamp",
-      type: "Bootcamp",
-      date: "Dec 10 - Dec 15",
-      location: "RP Kigali College",
-      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 2,
-      title: "Entrepreneurship 101: From Idea to Market",
-      type: "Workshop",
-      date: "Nov 25",
-      location: "Online (Teams)",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 3,
-      title: "Advanced Python for Data Science",
-      type: "Certification",
-      date: "Jan 10 - Feb 10",
-      location: "RP Huye College",
-      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 4,
-      title: "PCB Design & Fabrication",
-      type: "Workshop",
-      date: "Nov 30",
-      location: "RP Tumba College",
-      image: "https://images.unsplash.com/photo-1597733336794-12d05021d510?q=80&w=800&auto=format&fit=crop"
-    }
-  ];
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading (replace with real fetch later)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 pt-10">
-      <div className="container mx-auto px-4 space-y-10">
-        
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto max-w-6xl px-4 py-10 md:py-12">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 animate-slide-up">
-          <h1 className="text-4xl md:text-5xl font-bold text-rp-blue">
-            Training & <span className="text-rp-gold">Upskilling</span>
+        <div className="mb-10 text-center">
+          <h1 className="text-2xl md:text-3xl font-semibold text-slate-900">
+            Training & Upskilling
           </h1>
-          <p className="text-slate-500 text-lg">
-            Enhance your skills with workshops, bootcamps, and certifications offered by RP and partners.
+          <p className="mt-3 text-slate-600 max-w-2xl mx-auto">
+            Build your skills through workshops, bootcamps, and certification programs
           </p>
         </div>
 
-        {/* Training Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {trainings.map((item, idx) => (
-            <Card key={item.id} className="bg-white shadow-lg hover:-translate-y-2 transition-transform duration-300 overflow-hidden group border-none animate-slide-up" style={{ animationDelay: `${idx * 100}ms` }}>
-              <div className="h-40 overflow-hidden relative">
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <Badge className="absolute top-3 right-3 bg-white/90 text-rp-blue hover:bg-white">{item.type}</Badge>
-              </div>
-              
-              <CardContent className="p-5 space-y-3">
-                <h3 className="font-bold text-slate-900 line-clamp-2 h-12">{item.title}</h3>
-                <div className="space-y-2 text-sm text-slate-500">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={14} className="text-rp-gold" /> {item.date}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin size={14} className="text-rp-blue" /> {item.location}
+        <Separator className="mb-10" />
+
+        {/* Training Cards */}
+        {isLoading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="border border-neutral-200 rounded-md overflow-hidden">
+                <Skeleton className="h-48 w-full" />
+                <div className="p-5 space-y-3">
+                  <Skeleton className="h-6 w-4/5 mb-2" />
+                  <Skeleton className="h-4 w-full mb-1" />
+                  <Skeleton className="h-4 w-3/4 mb-3" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-5 w-24" />
+                    <Skeleton className="h-5 w-28" />
                   </div>
                 </div>
-              </CardContent>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trainingData.map((training) => (
+              <Card
+                key={training.id}
+                className="border-neutral-200 hover:border-neutral-300 transition-colors duration-150 flex flex-col"
+              >
+                <CardContent className="p-5 flex flex-col flex-1">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <h3 className="font-medium text-base line-clamp-2 flex-1">
+                      {training.title}
+                    </h3>
+                    <Badge
+                      variant="secondary"
+                      className="text-xs bg-primary/10 text-primary border-primary/20 whitespace-nowrap"
+                    >
+                      {training.type}
+                    </Badge>
+                  </div>
 
-              <CardFooter className="p-5 pt-0">
-                <Button className="w-full bg-slate-900 text-white hover:bg-rp-blue transition-colors">Register Now</Button>
-              </CardFooter>
-            </Card>
-          ))}
+                  <p className="text-sm text-neutral-600 mb-5 flex-1 line-clamp-3">
+                    {training.description}
+                  </p>
+
+                  <div className="text-xs text-neutral-600 space-y-2 mt-auto">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <span>{training.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <span>{training.location}</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-5 w-full border-neutral-300 text-neutral-700 hover:bg-neutral-100"
+                  >
+                    Register / Learn More
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* Optional CTA section */}
+        <div className="mt-16 text-center">
+          <h3 className="text-xl font-medium text-slate-900 mb-4">
+            Want to offer training?
+          </h3>
+          <p className="text-slate-600 mb-6 max-w-lg mx-auto">
+            Institutions and partners can publish training opportunities on the platform.
+          </p>
+          <Button className="bg-primary hover:bg-primary-700 text-white">
+            Publish Training Opportunity
+          </Button>
         </div>
-
       </div>
     </div>
   );

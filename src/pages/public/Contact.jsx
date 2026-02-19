@@ -1,145 +1,252 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field';
+import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Phone, Mail, Send, Facebook, Linkedin, X } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { MapPin, Phone, Mail, Send, Twitter, Linkedin, Facebook } from 'lucide-react';
 
 const Contact = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading (e.g. fetching contact details or form config)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4">
-      <div className="max-w-6xl mx-auto space-y-12">
-        
-        {/* Header Section */}
-        <div className="text-center space-y-4 animate-slide-up">
-          <h1 className="text-4xl font-bold text-slate-900">Get in Touch</h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Have questions about our innovation programs, training, or partnerships? 
-            We'd love to hear from you.
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto max-w-6xl px-4 py-12 md:py-16 lg:py-20">
+        {/* Header */}
+        <div className="mb-14 md:mb-16">
+          <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-5">
+            Get in Touch
+          </h1>
+          <p className="text-lg text-slate-600 max-w-3xl">
+            Have questions about publishing innovations, applying to calls, training opportunities, 
+            partnerships or platform features? Our team is here to help.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          
-          {/* LEFT COLUMN: Communication Channels */}
-          <div className="md:col-span-1 space-y-6 animate-slide-up">
-            
-            {/* Contact Info Card */}
-            <Card className="bg-rp-blue text-white shadow-xl border-none">
-              <CardContent className="p-8 space-y-8">
-                <div>
-                  <h3 className="text-xl font-bold mb-6 border-b border-white/20 pb-4">Contact Information</h3>
-                  
+        <Separator className="mb-12 md:mb-16" />
+
+        <div className="grid md:grid-cols-5 gap-10 lg:gap-14">
+          {/* Contact Information */}
+          <div className="md:col-span-2 space-y-10">
+            <div>
+              <h2 className="text-xl font-medium text-slate-900 mb-6">
+                Contact Details
+              </h2>
+
+              {isLoading ? (
+                <div className="space-y-6">
+                  <Skeleton className="h-28 w-full rounded-md" />
+                  <Skeleton className="h-28 w-full rounded-md" />
+                </div>
+              ) : (
+                <Card className="border-neutral-200">
+                  <CardContent className="p-6 md:p-8 space-y-8">
+                    <div className="space-y-7 text-sm">
+                      <div className="flex items-start gap-4">
+                        <MapPin className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                        <div>
+                          <p className="font-medium text-slate-900">Location</p>
+                          <p className="text-neutral-700 mt-1 leading-relaxed">
+                            RP Center for Technologies and Innovations<br />
+                            Rwanda Polytechnic – Kigali Campus<br />
+                            KK 15 Road, Kigali, Rwanda
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4">
+                        <Mail className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                        <div>
+                          <p className="font-medium text-slate-900">Email</p>
+                          <div className="mt-1 space-y-1">
+                            <a
+                              href="mailto:info@rp.ac.rw"
+                              className="text-neutral-700 hover:text-primary transition-colors block"
+                            >
+                              info@rp.ac.rw
+                            </a>
+                            <a
+                              href="mailto:innovation@rp.ac.rw"
+                              className="text-neutral-700 hover:text-primary transition-colors block"
+                            >
+                              innovation@rp.ac.rw
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4">
+                        <Phone className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                        <div>
+                          <p className="font-medium text-slate-900">Phone</p>
+                          <p className="text-neutral-700 mt-1">
+                            +250 791 100 954<br />
+                            +250 731 100 954
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4">
+                      <h4 className="text-sm font-medium text-slate-900 mb-4">
+                        Social Channels
+                      </h4>
+                      <div className="flex gap-5">
+                        <a
+                          href="#"
+                          className="text-neutral-600 hover:text-primary transition-colors"
+                          aria-label="Twitter"
+                        >
+                          <Twitter className="h-5 w-5" />
+                        </a>
+                        <a
+                          href="#"
+                          className="text-neutral-600 hover:text-primary transition-colors"
+                          aria-label="LinkedIn"
+                        >
+                          <Linkedin className="h-5 w-5" />
+                        </a>
+                        <a
+                          href="#"
+                          className="text-neutral-600 hover:text-primary transition-colors"
+                          aria-label="Facebook"
+                        >
+                          <Facebook className="h-5 w-5" />
+                        </a>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="md:col-span-3">
+            <Card className="border-neutral-200 h-full">
+              <CardContent className="p-6 md:p-8 lg:p-10">
+                <h2 className="text-xl font-medium text-slate-900 mb-2">
+                  Send a Message
+                </h2>
+                <p className="text-sm text-neutral-600 mb-8">
+                  Our team typically responds within 24–48 hours during working days.
+                </p>
+
+                {isLoading ? (
                   <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="bg-white/10 p-3 rounded-lg">
-                        <MapPin className="h-6 w-6 text-rp-gold" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-rp-gold">Visit Us</p>
-                        <p className="text-slate-200 text-sm leading-relaxed">
-                          RP InnoHub HQ,<br />
-                          KK 15 Rd, Kigali,<br />
-                          Rwanda
-                        </p>
-                      </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <Skeleton className="h-10 w-full" />
+                      <Skeleton className="h-10 w-full" />
                     </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="bg-white/10 p-3 rounded-lg">
-                        <Mail className="h-6 w-6 text-rp-gold" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-rp-gold">Email Us</p>
-                        <p className="text-slate-200 text-sm">info@rp.ac.rw</p>
-                        <p className="text-slate-200 text-sm">partners@rp.ac.rw</p>
-                      </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <Skeleton className="h-10 w-full" />
+                      <Skeleton className="h-10 w-full" />
                     </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="bg-white/10 p-3 rounded-lg">
-                        <Phone className="h-6 w-6 text-rp-gold" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-rp-gold">Call Us</p>
-                        <p className="text-slate-200 text-sm">+250 791 100 954</p>
-                        <p className="text-slate-200 text-sm">+250 731 100 954</p>
-                      </div>
+                    <Skeleton className="h-40 w-full" />
+                    <div className="flex gap-4">
+                      <Skeleton className="h-11 w-36" />
+                      <Skeleton className="h-11 w-28" />
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <form className="space-y-7">
+                    <FieldGroup>
+                      <FieldSet>
+                        <FieldGroup className="grid md:grid-cols-2 gap-6">
+                          <Field>
+                            <FieldLabel htmlFor="name">Full Name</FieldLabel>
+                            <Input
+                              id="name"
+                              placeholder="Enter your full name"
+                              required
+                            />
+                          </Field>
 
-                {/* Social Media Channels */}
-                <div className="pt-4">
-                  <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-slate-300">Follow Us</h4>
-                  <div className="flex gap-4">
-                    {/* X (formerly Twitter) */}
-                    <a href="#" className="bg-white/10 p-2 rounded-full hover:bg-rp-gold hover:text-rp-blue transition-colors group">
-                      <X size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
-                    {/* LinkedIn */}
-                    <a href="#" className="bg-white/10 p-2 rounded-full hover:bg-rp-gold hover:text-rp-blue transition-colors group">
-                      <Linkedin size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
-                    {/* Facebook */}
-                    <a href="#" className="bg-white/10 p-2 rounded-full hover:bg-rp-gold hover:text-rp-blue transition-colors group">
-                      <Facebook size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                          <Field>
+                            <FieldLabel htmlFor="email">Email Address</FieldLabel>
+                            <Input
+                              id="email"
+                              type="email"
+                              placeholder="your.email@example.com"
+                              required
+                            />
+                          </Field>
+                        </FieldGroup>
 
-          </div>
+                        <FieldGroup className="grid md:grid-cols-2 gap-6">
+                          <Field>
+                            <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
+                            <Input
+                              id="phone"
+                              placeholder="+250 7XX XXX XXX"
+                            />
+                            <FieldDescription className="text-xs mt-1.5">
+                              Include country code if international
+                            </FieldDescription>
+                          </Field>
 
-          {/* RIGHT COLUMN: Inquiry Form */}
-          <div className="md:col-span-2 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <Card className="bg-white shadow-xl border border-slate-200 h-full">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Send us a Message</h3>
-                <p className="text-slate-500 mb-8">Fill out the form below and our team will get back to you within 24 hours.</p>
+                          <Field>
+                            <FieldLabel htmlFor="subject">Subject</FieldLabel>
+                            <Input
+                              id="subject"
+                              placeholder="e.g. Partnership, Platform Issue, Training Inquiry"
+                            />
+                          </Field>
+                        </FieldGroup>
 
-                <form className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium">Your Name</Label>
-                      <Input placeholder="John Doe" className="bg-white border-slate-300 text-slate-900 focus-visible:ring-rp-blue" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium">Email Address</Label>
-                      <Input type="email" placeholder="john@example.com" className="bg-white border-slate-300 text-slate-900 focus-visible:ring-rp-blue" />
-                    </div>
-                  </div>
+                        <Field>
+                          <FieldLabel htmlFor="message">Message</FieldLabel>
+                          <Textarea
+                            id="message"
+                            placeholder="Please describe your inquiry or question in detail..."
+                            className="min-h-[160px] resize-none"
+                            required
+                          />
+                          <FieldDescription className="text-xs mt-1.5">
+                            The more details you provide, the faster we can assist you.
+                          </FieldDescription>
+                        </Field>
+                      </FieldSet>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium">Phone Number</Label>
-                      <Input placeholder="+250 ..." className="bg-white border-slate-300 text-slate-900 focus-visible:ring-rp-blue" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-medium">Subject</Label>
-                      <Input placeholder="Partnership / Inquiry / Support" className="bg-white border-slate-300 text-slate-900 focus-visible:ring-rp-blue" />
-                    </div>
-                  </div>
+                      <div className="pt-5 flex flex-col sm:flex-row gap-4">
+                        <Button
+                          type="submit"
+                          className="bg-primary hover:bg-primary-700 text-white min-w-[160px]"
+                        >
+                          <Send className="mr-2 h-4 w-4" />
+                          Send Message
+                        </Button>
 
-                  <div className="space-y-2">
-                    <Label className="text-slate-700 font-medium">Message</Label>
-                    <textarea 
-                      className="flex min-h-[150px] w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 ring-offset-white placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rp-blue disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="How can we help you?"
-                    />
-                  </div>
-
-                  <div className="pt-2">
-                    <Button className="w-full md:w-auto bg-rp-blue hover:bg-blue-900 text-white px-8 py-6 text-lg shadow-lg shadow-blue-900/10">
-                      <Send className="mr-2 h-5 w-5" /> Send Message
-                    </Button>
-                  </div>
-                </form>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="border-neutral-300 min-w-[160px]"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </FieldGroup>
+                  </form>
+                )}
               </CardContent>
             </Card>
           </div>
-
         </div>
       </div>
     </div>

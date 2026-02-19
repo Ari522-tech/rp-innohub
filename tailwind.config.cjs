@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
+    './pages/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+    './app/**/*.{js,jsx,ts,tsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     container: {
@@ -14,6 +14,7 @@ module.exports = {
         DEFAULT: '1rem',
         sm: '1.5rem',
         lg: '2rem',
+        xl: '2.5rem',
       },
       screens: {
         sm: '640px',
@@ -31,35 +32,36 @@ module.exports = {
       },
 
       colors: {
-        // ── Updated primary palette – more modern & attractive blue ───────
+        // ── Primary – modern, trustworthy blue (main brand color) ────────────────
         primary: {
           50:  '#f0f7ff',
           100: '#e0f0fe',
           200: '#bae0fd',
           300: '#7cc8fc',
           400: '#36aefb',
-          500: '#0a95e8',      // ← New main primary – more vivid & fresh
+          500: '#0a95e8',      // Main primary – vivid yet professional
           600: '#0878c2',
           700: '#07609c',
           800: '#084f80',
           900: '#0a4269',
+          950: '#052b45',      // Added for very dark states (e.g. dark mode)
           DEFAULT: '#0a95e8',
           foreground: '#ffffff',
         },
 
-        // Secondary – softer complementary blue-gray for hover/states
+        // Secondary – softer complementary blue for hover/states
         secondary: {
           DEFAULT: '#3b82f6',
           foreground: '#ffffff',
         },
 
-        // Very restrained accent – only for urgent/important elements
+        // Accent – used **only** for urgent/important highlights
         accent: {
           DEFAULT: '#fef200',
           foreground: '#1e293b',
         },
 
-        // ── Neutral palette – warmer & more pleasant than pure cold gray ──
+        // Neutral – warm, pleasant gray scale (better readability)
         neutral: {
           50:  '#f9fafb',
           100: '#f3f4f6',
@@ -73,11 +75,11 @@ module.exports = {
           900: '#111827',
         },
 
-        // Background & surface colors
+        // Background & surface
         background: '#ffffff',
         surface: {
           DEFAULT: '#f9fafb',
-          subtle: '#f0f5ff',   // very light blue tint
+          subtle: '#f0f5ff',   // very light blue tint for sections
         },
 
         muted: {
@@ -93,7 +95,7 @@ module.exports = {
         'foreground-muted': '#4b5563',
         'foreground-subtle': '#6b7280',
 
-        // Status colors – clean & professional
+        // Status colors (used sparingly)
         success: {
           DEFAULT: '#10b981',
           foreground: '#ffffff',
@@ -123,9 +125,9 @@ module.exports = {
       },
 
       borderRadius: {
-        lg: '0.625rem',   // 10px – slightly softer but still clean
-        md: '0.5rem',     // 8px
-        sm: '0.375rem',   // 6px
+        lg: '0.625rem',   // 10px – soft but clean
+        md: '0.5rem',     // 8px – most cards/buttons
+        sm: '0.375rem',   // 6px – small elements
         DEFAULT: '0.5rem',
       },
 
@@ -137,7 +139,7 @@ module.exports = {
         11: '2.75rem',
       },
 
-      // Minimal animations – only functional ones
+      // Very restrained animations – only when truly functional
       keyframes: {
         'fade-in': {
           from: { opacity: '0' },

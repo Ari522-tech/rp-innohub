@@ -16,8 +16,9 @@ import {
   Mail,
   Globe,
 } from 'lucide-react';
+import { AuthModal } from '@/components/auth/AuthModal'; // ← Import the modal
 
-// ── Fake data (later you will get this from your backend) ────────────────
+// ── Fake data (later from backend) ──────────────────────────────────────
 const featuredProjects = [
   {
     id: 1,
@@ -69,17 +70,24 @@ const openCalls = [
   },
 ];
 
-// ── Home Page Component ──────────────────────────────────────────────────
+// ── Home Page ────────────────────────────────────────────────────────────
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authDefaultView, setAuthDefaultView] = useState('login');
 
-  // Simulate loading (in real app → fetch from API)
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Function to open modal in register mode
+  const openRegisterModal = () => {
+    setAuthDefaultView('register');
+    setShowAuthModal(true);
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -96,19 +104,19 @@ const Home = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Changed: opens modal in register mode */}
             <Button
-              asChild
               size="lg"
               className="bg-[#0a77bc] hover:bg-[#095e99] text-white px-8"
+              onClick={openRegisterModal}
             >
-              <Link to="/register">Become an Innovator</Link>
+              Become an Innovator
             </Button>
 
             <Button
               asChild
               size="lg"
-              variant="outline"
-              className="border-slate-400 text-white hover:bg-slate-800 px-8"
+              className=" bg-slate-50 hover:bg-[#095e99] text-blue-600 px-8 hover:text-white"
             >
               <Link to="/calls">See Open Calls</Link>
             </Button>
@@ -263,7 +271,10 @@ const Home = () => {
             Publish your project or find the right call for your team.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-[#0a77bc] hover:bg-[#095e99]">
+            <Button
+              asChild
+              className="bg-[#0a77bc] hover:bg-[#095e99] text-white"
+            >
               <Link to="/projects/new">Publish Project</Link>
             </Button>
             <Button asChild variant="outline">
@@ -272,6 +283,13 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Auth Modal – rendered conditionally */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        defaultView={authDefaultView}
+      />
     </div>
   );
 };

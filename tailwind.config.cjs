@@ -27,7 +27,7 @@ module.exports = {
 
     extend: {
       fontFamily: {
-        sans: ['Vastago Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
 

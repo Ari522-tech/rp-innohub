@@ -1,101 +1,102 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Calendar, Save, Send } from 'lucide-react';
+// src/pages/institution/PostCall.jsx
+"use client"
 
-const PostCall = () => {
+// import { useState } from "react"
+import { Calendar, Save, Send } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+
+export default function PostCall() {
   return (
-    <div className="max-w-3xl mx-auto space-y-6 pb-10">
-      
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-slate-900">Post New Opportunity</h1>
-        <Button variant="outline" className="border-slate-300 text-slate-600 hover:text-slate-900 hover:bg-slate-100">Cancel</Button>
+    <div className="space-y-8">
+      <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+            Post New Call for Development
+          </h1>
+          <p className="text-sm text-slate-600">
+            Define the challenge and invite innovators to propose solutions
+          </p>
+        </div>
+        <Button variant="outline">Cancel</Button>
       </div>
 
-      <Card className="bg-white shadow-xl border-t-4 border-t-rp-blue">
+      <Separator />
+
+      <Card className="border border-slate-200">
         <CardHeader>
-          <CardTitle className="text-slate-900">Call Details</CardTitle>
-          <CardDescription className="text-slate-500">Define the challenge, budget, and timeline.</CardDescription>
+          <CardTitle className="text-lg font-medium">Call Information</CardTitle>
+          <CardDescription className="text-sm text-slate-600">
+            Be specific about requirements, timeline and budget
+          </CardDescription>
         </CardHeader>
+
         <CardContent className="space-y-6">
-          
-          {/* Title & Type */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">Call Title</Label>
-              {/* Added text-slate-900 */}
-              <Input 
-                placeholder="e.g. Digital Health Records System" 
-                className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-rp-blue" 
-              />
+              <Label className="text-sm font-medium text-slate-700">Call Title</Label>
+              <Input placeholder="e.g. Development of Mobile Learning Platform for TVET" />
             </div>
+
             <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">Type</Label>
+              <Label className="text-sm font-medium text-slate-700">Type of Opportunity</Label>
               <Select>
-                {/* Added text-slate-900 */}
-                <SelectTrigger className="bg-white border-slate-300 text-slate-900 focus:ring-rp-blue">
-                  <SelectValue placeholder="Select Type" />
+                <SelectTrigger>
+                  <SelectValue placeholder="Select type" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-slate-200">
-                  <SelectItem value="job" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Job / Internship</SelectItem>
-                  <SelectItem value="challenge" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Innovation Challenge</SelectItem>
-                  <SelectItem value="contract" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Development Contract</SelectItem>
-                  <SelectItem value="grant" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Research Grant</SelectItem>
+                <SelectContent>
+                  <SelectItem value="development">Development Contract</SelectItem>
+                  <SelectItem value="grant">Research / Innovation Grant</SelectItem>
+                  <SelectItem value="challenge">Open Innovation Challenge</SelectItem>
+                  <SelectItem value="internship">Internship / Mentorship</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          {/* Description */}
           <div className="space-y-2">
-            <Label className="text-slate-700 font-medium">Description & Requirements</Label>
-            {/* Added text-slate-900 */}
-            <textarea 
-              className="flex min-h-[150px] w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 ring-offset-white placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rp-blue disabled:cursor-not-allowed disabled:opacity-50"
-              placeholder="Describe what you need, required skills, and expected deliverables..."
+            <Label className="text-sm font-medium text-slate-700">Description & Requirements</Label>
+            <Textarea
+              placeholder="Describe the problem, expected deliverables, required skills..."
+              className="min-h-[140px]"
             />
           </div>
 
-          {/* Budget & Timeline */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">Budget / Salary Range (RWF)</Label>
-              {/* Added text-slate-900 */}
-              <Input 
-                placeholder="e.g. 15,000,000 - 20,000,000" 
-                className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-rp-blue" 
-              />
+              <Label className="text-sm font-medium text-slate-700">Budget Range (RWF)</Label>
+              <Input placeholder="e.g. 10,000,000 – 25,000,000" />
             </div>
+
             <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">Application Deadline</Label>
+              <Label className="text-sm font-medium text-slate-700">Deadline</Label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-2.5 h-5 w-5 text-slate-400" />
-                {/* Added text-slate-900 & padding for icon */}
-                <Input 
-                  className="pl-10 bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-rp-blue" 
-                  placeholder="DD/MM/YYYY" 
-                />
+                <Input className="pl-10" placeholder="DD/MM/YYYY" />
               </div>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="pt-4 flex justify-end gap-4 border-t border-slate-100 mt-6">
-            <Button variant="ghost" className="text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-              <Save className="mr-2 h-4 w-4" /> Save Draft
+          <Separator />
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+            <Button variant="outline">
+              <Save className="mr-2 h-4 w-4" />
+              Save Draft
             </Button>
-            <Button className="bg-rp-blue hover:bg-blue-900 text-white min-w-[150px] shadow-lg shadow-blue-900/20">
-              <Send className="mr-2 h-4 w-4" /> Publish Call
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Send className="mr-2 h-4 w-4" />
+              Publish Call
             </Button>
           </div>
-
         </CardContent>
       </Card>
     </div>
-  );
-};
-
-export default PostCall;
+  )
+}

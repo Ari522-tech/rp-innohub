@@ -1,101 +1,113 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Upload, Save } from 'lucide-react';
+// src/pages/innovator/AddProject.jsx
+"use client"
 
-const AddProject = () => {
+// import { useState } from "react"
+import { ArrowRight, Save, Upload } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+
+export default function AddProject() {
+  // const [step, setStep] = useState(1) // for future multi-step
+
   return (
-    <div className="max-w-3xl mx-auto space-y-6 pb-10">
-      
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-slate-900">Add New Innovation</h1>
-        <Button variant="outline" className="border-slate-300 text-slate-600 hover:text-slate-900">Cancel</Button>
+    <div className="space-y-8">
+      <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+            Publish New Innovation
+          </h1>
+          <p className="text-sm text-slate-600">
+            Share your socio-economic IT solution with institutions
+          </p>
+        </div>
+        <Button variant="outline">Cancel</Button>
       </div>
 
-      <Card className="bg-white shadow-xl border-t-4 border-t-rp-blue">
+      <Separator />
+
+      <Card className="border border-slate-200">
         <CardHeader>
-          <CardTitle className="text-slate-900">Project Details</CardTitle>
-          <CardDescription className="text-slate-500">Share your innovation with the world.</CardDescription>
+          <CardTitle className="text-lg font-medium">Project Information</CardTitle>
+          <CardDescription className="text-sm text-slate-600">
+            Provide clear details so institutions can understand your solution
+          </CardDescription>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
-          
-          {/* Basic Info */}
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* Step 1 – Basic info */}
+          <div className="grid gap-6 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">Project Title</Label>
-              {/* Added text-slate-900 for dark typing color */}
-              <Input 
-                placeholder="e.g. Smart Irrigation System" 
-                className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-rp-blue" 
-              />
+              <Label className="text-sm font-medium text-slate-700">Project Title</Label>
+              <Input placeholder="e.g. Smart Irrigation Monitoring System" />
             </div>
-            
+
             <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">Category</Label>
+              <Label className="text-sm font-medium text-slate-700">Category</Label>
               <Select>
-                {/* Added text-slate-900 to the trigger */}
-                <SelectTrigger className="bg-white border-slate-300 text-slate-900 focus:ring-rp-blue">
-                  <SelectValue placeholder="Select Category" />
+                <SelectTrigger>
+                  <SelectValue placeholder="Select main category" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-slate-200">
-                  <SelectItem value="agriculture" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Agriculture</SelectItem>
-                  <SelectItem value="health" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Health</SelectItem>
-                  <SelectItem value="education" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Education</SelectItem>
-                  <SelectItem value="fintech" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Fintech</SelectItem>
-                  <SelectItem value="energy" className="text-slate-700 focus:bg-slate-100 cursor-pointer">Energy</SelectItem>
+                <SelectContent>
+                  <SelectItem value="agriculture">Agriculture</SelectItem>
+                  <SelectItem value="health">Health</SelectItem>
+                  <SelectItem value="education">Education</SelectItem>
+                  <SelectItem value="transport">Transport</SelectItem>
+                  <SelectItem value="energy">Energy & Environment</SelectItem>
+                  <SelectItem value="fintech">Fintech</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          {/* Description */}
           <div className="space-y-2">
-            <Label className="text-slate-700 font-medium">Description</Label>
-            {/* Added text-slate-900 to textarea */}
-            <textarea 
-              className="flex min-h-[120px] w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 ring-offset-white placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rp-blue disabled:cursor-not-allowed disabled:opacity-50"
-              placeholder="Describe the problem your project solves..."
+            <Label className="text-sm font-medium text-slate-700">Short Description</Label>
+            <Textarea
+              placeholder="Summarize the problem and your solution in 2–3 sentences..."
+              className="min-h-[100px]"
             />
           </div>
 
-          {/* Technologies */}
           <div className="space-y-2">
-            <Label className="text-slate-700 font-medium">Technologies Used</Label>
-            <Input 
-              placeholder="e.g. React, IoT, Python (Comma separated)" 
-              className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-rp-blue" 
-            />
+            <Label className="text-sm font-medium text-slate-700">Technologies / Stack</Label>
+            <Input placeholder="React, Node.js, IoT sensors, Python, ..." />
+            <p className="text-xs text-slate-500">
+              Separate with commas • helps institutions match experts
+            </p>
           </div>
 
-          {/* Image Upload Mockup */}
+          {/* Image upload area */}
           <div className="space-y-2">
-            <Label className="text-slate-700 font-medium">Project Image / Thumbnail</Label>
-            <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-slate-50 hover:border-rp-blue transition-all cursor-pointer group">
-              <div className="bg-slate-100 p-3 rounded-full mb-3 group-hover:bg-blue-50 transition-colors">
-                <Upload className="h-6 w-6 text-slate-500 group-hover:text-rp-blue" />
-              </div>
-              <p className="text-sm font-medium text-slate-700 group-hover:text-rp-blue">Click to upload or drag and drop</p>
-              <p className="text-xs text-slate-400 mt-1">SVG, PNG, JPG or GIF (max. 3MB)</p>
+            <Label className="text-sm font-medium text-slate-700">Project Image / Thumbnail</Label>
+            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 p-10 text-center hover:border-blue-400 transition-colors">
+              <Upload className="mb-3 h-8 w-8 text-slate-400" />
+              <p className="font-medium text-slate-700">Click to upload or drag & drop</p>
+              <p className="mt-1 text-xs text-slate-500">
+                PNG, JPG, WEBP • max 3 MB • recommended 1200×800
+              </p>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="pt-4 flex justify-end gap-4 border-t border-slate-100 mt-6">
-            <Button variant="ghost" className="text-slate-600 hover:text-slate-900 hover:bg-slate-100">Save as Draft</Button>
-            <Button className="bg-rp-blue hover:bg-blue-900 text-white min-w-[150px] shadow-lg shadow-blue-900/20">
-              <Save className="mr-2 h-4 w-4" /> Publish Project
+          <Separator />
+
+          {/* Action buttons */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+            <Button variant="outline" className="sm:w-auto">
+              <Save className="mr-2 h-4 w-4" />
+              Save as Draft
+            </Button>
+            <Button className="bg-blue-600 hover:bg-blue-700 sm:w-auto">
+              Continue to Details
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
-
         </CardContent>
       </Card>
     </div>
-  );
-};
-
-export default AddProject;
+  )
+}

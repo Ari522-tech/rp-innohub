@@ -1,22 +1,22 @@
+// src/components/layout/PublicLayout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar'; 
-import Footer from './Footer'; // Import the new responsive Footer
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
-const PublicLayout = () => {
+export default function PublicLayout() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      {/* Public top navigation */}
       <Navbar />
-      
-      {/* Outlet renders the child route (Home, About, etc.) */}
+
+      {/* Main content area – grows to fill available space */}
       <main className="flex-grow">
-        <Outlet />
+        <Outlet /> {/* Renders Home, Innovations, Calls, etc. */}
       </main>
 
-      {/* The new responsive Footer component */}
+      {/* Public footer */}
       <Footer />
     </div>
   );
-};
-
-export default PublicLayout;
+}

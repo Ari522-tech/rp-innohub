@@ -1,107 +1,171 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, FileText, CheckCircle, AlertCircle } from 'lucide-react';
+// src/pages/admin/AdminDashboard.jsx
+"use client"
 
-const AdminDashboard = () => {
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
+import { Users, Briefcase, FileText, AlertTriangle, ArrowRight } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+
+const chartData = [
+  { date: '2026-01-01', users: 280, projects: 92 },
+  { date: '2026-01-15', users: 310, projects: 105 },
+  { date: '2026-02-01', users: 335, projects: 118 },
+  { date: '2026-02-15', users: 342, projects: 128 },
+  // ... extend if needed
+]
+
+export default function AdminDashboard() {
+  const [stats, setStats] = useState(null)
+  const [timeRange, setTimeRange] = useState('90d')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setStats({
+        totalUsers: 342,
+        activeInnovators: 187,
+        institutions: 41,
+        totalProjects: 128,
+        pendingModeration: 7,
+        reportedItems: 3,
+      })
+      setIsLoading(false)
+    }, 900)
+  }, [])
+
+  const filteredData = chartData.filter(item => {
+    const date = new Date(item.date)
+    const ref = new Date('2026-02-20')
+    let days = timeRange === '30d' ? 30 : timeRange === '7d' ? 7 : 90
+    const start = new Date(ref)
+    start.setDate(start.getDate() - days)
+    return date >= start
+  })
+
+  if (isLoading) return <Skeleton className="h-[600px] w-full rounded-xl" />
+
   return (
     <div className="space-y-8">
-      {/* 1. Page Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
-        <p className="text-slate-400">Platform overview and pending actions.</p>
+      <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+            Admin Center
+          </h1>
+          <p className="text-sm text-slate-600">Platform health & moderation queue</p>
+        </div>
+        <Button variant="outline" asChild>
+          <Link to="/admin/reports">
+            Full Reports <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
       </div>
 
-      {/* 2. Key Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="bg-slate-800 border-slate-700 text-slate-100">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400 uppercase">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-rp-blue" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">1,240</div>
-            <p className="text-xs text-slate-500 mt-1">+12 this week</p>
-          </CardContent>
-        </Card>
+      <Separator />
 
-        <Card className="bg-slate-800 border-slate-700 text-slate-100">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400 uppercase">Pending Projects</CardTitle>
-            <AlertCircle className="h-4 w-4 text-rp-gold" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">8</div>
-            <p className="text-xs text-rp-gold mt-1">Action required</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-slate-800 border-slate-700 text-slate-100">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400 uppercase">Active Calls</CardTitle>
-            <FileText className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">15</div>
-            <p className="text-xs text-slate-500 mt-1">3 closing soon</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-slate-800 border-slate-700 text-slate-100">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400 uppercase">Total Impact</CardTitle>
-            <CheckCircle className="h-4 w-4 text-blue-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">450+</div>
-            <p className="text-xs text-slate-500 mt-1">Innovations Published</p>
-          </CardContent>
-        </Card>
+      {/* Metric Cards */}
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <MetricCard title="Total Users" value={stats?.totalUsers} trend="+22" trendUp />
+        <MetricCard title="Active Innovators" value={stats?.activeInnovators} trend="+15" trendUp />
+        <MetricCard title="Institutions" value={stats?.institutions} trend="+3" trendUp />
+        <MetricCard title="Pending Moderation" value={stats?.pendingModeration} trend="+4" trendUp={false} />
       </div>
 
-      {/* 3. Recent Activity / Pending Approvals Preview */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="bg-slate-800 border-slate-700 text-slate-100">
-          <CardHeader>
-            <CardTitle>Recent Pending Approvals</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg border border-slate-600">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 bg-rp-blue/20 rounded-md flex items-center justify-center text-rp-blue font-bold">
-                      P{i}
-                    </div>
-                    <div>
-                      <p className="font-bold text-sm">Smart Irrigation v{i}</p>
-                      <p className="text-xs text-slate-400">By Jean Paul • 2 hours ago</p>
-                    </div>
-                  </div>
-                  <button className="text-xs bg-rp-blue px-3 py-1 rounded hover:bg-blue-600">Review</button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      {/* Growth Chart */}
+      <Card className="border border-slate-200">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <div>
+            <CardTitle className="text-lg font-medium">Platform Growth</CardTitle>
+            <CardDescription className="text-sm text-slate-600">
+              New users & published projects
+            </CardDescription>
+          </div>
+          <div className="flex items-center gap-2">
+            <ToggleGroup type="single" value={timeRange} onValueChange={setTimeRange} variant="outline" className="hidden sm:flex">
+              <ToggleGroupItem value="7d">7d</ToggleGroupItem>
+              <ToggleGroupItem value="30d">30d</ToggleGroupItem>
+              <ToggleGroupItem value="90d">90d</ToggleGroupItem>
+            </ToggleGroup>
+            <Select value={timeRange} onValueChange={setTimeRange}>
+              <SelectTrigger className="w-28 sm:hidden">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7d">7 days</SelectItem>
+                <SelectItem value="30d">30 days</SelectItem>
+                <SelectItem value="90d">90 days</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-1">
+          <ChartContainer config={{ users: { color: 'hsl(var(--primary))' }, projects: { color: 'hsl(var(--primary) / 0.6)' } }} className="h-[240px] sm:h-[280px]">
+            <AreaChart data={filteredData}>
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={v => new Date(v).toLocaleDateString('en', { month: 'short' })} />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Area dataKey="projects" type="natural" fill="hsl(var(--primary) / 0.4)" stroke="hsl(var(--primary) / 0.6)" stackId="a" />
+              <Area dataKey="users" type="natural" fill="hsl(var(--primary))" stroke="hsl(var(--primary))" stackId="a" />
+            </AreaChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
 
-        <Card className="bg-slate-800 border-slate-700 text-slate-100">
-          <CardHeader>
-            <CardTitle>System Alerts</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="p-3 bg-yellow-900/20 border border-yellow-700/50 rounded-lg text-yellow-200 text-sm">
-                ⚠️ High traffic detected on the "Calls" page. Server load at 45%.
+      {/* Pending Items / Activity (simple version – can be replaced with DataTable later) */}
+      <Card className="border border-slate-200">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium">Pending Actions</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="rounded-lg border border-slate-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">8 projects awaiting approval</p>
+                <p className="text-sm text-slate-500">Highest priority: 3 flagged</p>
               </div>
-              <div className="p-3 bg-green-900/20 border border-green-700/50 rounded-lg text-green-200 text-sm">
-                ✅ Daily backup completed successfully at 03:00 AM.
-              </div>
+              <Button variant="outline" size="sm">Review Queue</Button>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+          <div className="rounded-lg border border-slate-200 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">3 reported items</p>
+                <p className="text-sm text-slate-500">2 from last 24h</p>
+              </div>
+              <Button variant="outline" size="sm">Moderate</Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
-  );
-};
+  )
+}
 
-export default AdminDashboard;
+function MetricCard({ title, value, trend, trendUp }) {
+  return (
+    <Card className="border border-slate-200">
+      <CardHeader className="pb-2">
+        <CardDescription className="text-sm">{title}</CardDescription>
+        <CardTitle className="text-2xl font-semibold">{value}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Badge variant="outline" className={trendUp ? "text-green-600 border-green-200 bg-green-50" : "text-red-600 border-red-200 bg-red-50"}>
+          {trend}
+        </Badge>
+        <span className="ml-2 text-xs text-slate-600">vs last period</span>
+      </CardContent>
+    </Card>
+  )
+}
